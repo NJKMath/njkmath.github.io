@@ -66029,13 +66029,13 @@ const loadSelectedTypes = () => {
 </div>`;
         } else {
             selTypString += `<div class="learningMoveCard active" onClick = "learningMove()">
-    <h2 class="learningMoveFont">Learning Move: N/A</h2>
+    <h2 class="learningMoveFont">Learning Move: (Click a type)</h2>
 </div>`;
         }
         
     } else if (!typeLearning) {
     selTypString += `<div class="learningMoveCard" onClick = "learningMove()">
-    <h2 class="learningMoveFont">Learning Move: N/A</h2>
+    <h2 class="learningMoveFont">Learning Move: \n (Click to select)</h2>
 </div>`;
     } else {
         selTypString += `<div class="learningMoveCard" onClick = "learningMove()" style = "background-color: ${colors[typeCache[typeLearning-1].id-1]};">
@@ -66047,21 +66047,19 @@ const loadSelectedTypes = () => {
     <h2 class="learningMoveFont">Current Coverage</h2>
 </div>`;
 
-    if(!fullEvolvedOnly){
+    selTypString += `<div class="checkOptionsCard" onClick = "checkCombos()">
+    <h2 class="checkOptionsFont">Check Options</h2>
+</div>`;
+
+if(!fullEvolvedOnly){
     selTypString += `<div class="evoButtonCard" onClick = "evoButton()">
-    <h2 class="learningMoveFont">Fully Evolved Only (Off)</h2>
+    <h2 class="evoButtonFont">Fully Evolved Only (Off)</h2>
 </div>`;
     } else {
         selTypString += `<div class="evoButtonCard" onClick = "evoButton()">
-    <h2 class="learningMoveFont">Fully Evolved Only (On)</h2>
+    <h2 class="evoButtonFont">Fully Evolved Only (On)</h2>
 </div>`;
     }
-
-    
-
-    selTypString += `<div class="learningMoveCard" onClick = "checkCombos()">
-    <h2 class="learningMoveFont">Check Options</h2>
-</div>`;
 
     selectedtypes.innerHTML = selTypString;
 };
@@ -66228,11 +66226,11 @@ const loadOneType = (id) => {
 
     if(id == 0){
         oneTypeCard = `<div class="selectedTypeCard">
-            <h2 class="selTypeFont">N/A</h2>
+            <h2 class="movesetFont">N/A</h2>
     </div>`
     }else{
     oneTypeCard = `<div class="selectedTypeCard" onclick="removeSlot(${id})" style="background-color: ${colors[id-1]};">
-            <h2 class="selTypeFont">${typeCache[id-1].name}</h2>
+            <h2 class="movesetFont">${typeCache[id-1].name}</h2>
     </div>`
     }
 

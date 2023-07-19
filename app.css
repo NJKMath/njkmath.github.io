@@ -3,10 +3,6 @@ body {
     font-family: 'Rubik', sans-serif;
 }
 
-.typeSelFont{
-    font-size: heavy;
-}
-
 .typeSelCard{
     list-style: none;
     padding: 10px;
@@ -37,7 +33,13 @@ body {
     background-color: rgb(201, 152, 88);
     color: #222;
     height: 20px;
-    width: 120px;
+    width: 125px;
+}
+
+.evoButtonFont{
+    font-size: 12px;
+    font-weight: heavy;
+    margin-top: 5px;
 }
 
 .learningMoveCard{
@@ -45,8 +47,9 @@ body {
     padding: 10px;
     background-color: rgb(201, 152, 88);
     color: #222;
-    height: 20px;
+    height: 30px;
     width: 110px;
+    
 }
 
 .learningMoveCard.active{
@@ -54,7 +57,22 @@ body {
 }
 
 .learningMoveFont{
-    font-size: 10px;
+    font-size: 13px;
+    margin-top: 0px;
+}
+
+.checkOptionsCard{
+    list-style: none;
+    padding: 10px;
+    background-color: rgb(201, 152, 88);
+    color: #222;
+    height: 20px;
+    width: 100px;
+}
+
+.checkOptionsFont{
+    font-size: 14px;
+    margin-top: 5px;
 }
 
 .genSelCard{
@@ -62,7 +80,7 @@ body {
     padding: 1px;
     background-color: rgb(201, 152, 88);
     height: 40px;
-    width: 130px;
+    width: 135px;
 
 }
 
@@ -107,6 +125,7 @@ body {
     display: inline-block;
     position: relative;
 }
+
 .numResultsBlankCard{
     display: grid;
     background-color: white;
@@ -135,13 +154,20 @@ body {
 
 .selTypeFont{
     text-transform: uppercase;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: heavy;
+    text-shadow: 4px 4px 8px black;
+}
+
+.movesetFont{
+    text-transform: uppercase;
+    font-size: 14px;
     font-weight: heavy;
 }
 
 .genSelFont{
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: heavy;
 }
 
