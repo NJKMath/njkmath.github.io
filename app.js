@@ -65982,18 +65982,25 @@ const cacheType = (id) => {
     });
     }
 
+    if(isLearningMove && typeLearning!=id){
+        typeLearning = id;
+        displayTypes();
+        loadSelectedTypes();
+        return;
+    }
+
+    if(typeLearning == id){
+        typeLearning = 0;
+        displayTypes();
+        loadSelectedTypes();
+        return;
+    }
+
     for (let i = 0; i < 4; i++) {
         if(selectedTypes[i] == id){
             removeSlot(id);
             return;
         }
-    }
-
-    if(isLearningMove){
-        typeLearning = id;
-        displayTypes();
-        loadSelectedTypes();
-        return;
     }
 
     for (let i = 0; i < 4; i++) {
