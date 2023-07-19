@@ -1,0 +1,197 @@
+body {
+    background-color: azure;
+    font-family: 'Rubik', sans-serif;
+}
+
+.typeSelFont{
+    font-size: heavy;
+}
+
+.typeSelCard{
+    list-style: none;
+    padding: 10px;
+    color: #ffffff;
+}
+
+.typeSelCard.active{
+    padding: 5px;
+    border: 5px solid black;
+}
+
+.typeSelCard.learning{
+    padding: 5px;
+    border: 5px solid red;
+}
+
+.selectedTypeCard{
+    list-style: none;
+    padding: 1px;
+    background-color: rgb(201, 152, 88);
+    height: 40px;
+    width: 80px;
+}
+
+.evoButtonCard{
+    list-style: none;
+    padding: 10px;
+    background-color: rgb(201, 152, 88);
+    color: #222;
+    height: 20px;
+    width: 120px;
+}
+
+.learningMoveCard{
+    list-style: none;
+    padding: 10px;
+    background-color: rgb(201, 152, 88);
+    color: #222;
+    height: 20px;
+    width: 110px;
+}
+
+.learningMoveCard.active{
+    border: 5px solid red;
+}
+
+.learningMoveFont{
+    font-size: 10px;
+}
+
+.genSelCard{
+    list-style: none;
+    padding: 1px;
+    background-color: rgb(201, 152, 88);
+    height: 40px;
+    width: 130px;
+
+}
+
+.genSelCard.active{
+    background-color: rgb(37, 119, 26);
+}
+
+.resultsCard{
+    display: grid;
+    list-style: none;
+    background-color: rgb(143, 134, 123);
+    color: #222;
+    padding: 5px;
+
+    height: 40px;
+    width: 160px;
+    grid-gap: 1000px;
+    
+}
+
+.numResultsCard{
+    background-color: rgb(143, 134, 123);
+    color: #222;
+    height: 60px;
+    width: 900px;
+    padding: 1px;
+    margin: auto;
+    position: relative;
+}
+
+#wrapper{
+    float: right;
+    width: 200px;
+}
+
+.comboResultsCard{
+    background-color: rgb(143, 134, 123);
+    color: #222;
+    height: 60px;
+    width: 180px;
+    padding: 1px;
+    display: inline-block;
+    position: relative;
+}
+.numResultsBlankCard{
+    display: grid;
+    background-color: white;
+    color: white;
+    height: 30px;
+    padding: 1px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    clear: both;
+}
+
+.displayMonsCard{
+    padding: 5px;
+    color: #222;
+    
+    height: 80px;
+    width: 80px;
+    padding-inline-start: 0;
+    display: inline-block;
+}
+
+.card-title{
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.selTypeFont{
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: heavy;
+}
+
+.genSelFont{
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: heavy;
+}
+
+.resultsFont{
+    font-size: 16px;
+    font-weight: heavy;
+}
+
+#pokecalc{
+    padding-inline-start: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-gap: 20px;
+}
+
+#selectedtypes{
+    padding-inline-start: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 120px);
+    grid-gap: 30px;
+}
+
+#genSelect{
+    padding-inline-start: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 140px);
+    grid-gap: 10px;
+}
+
+#results{
+    padding-inline-start: 0;
+    display: list;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+}
+
+.container{
+    padding: 40px;
+}
+
+h1 {
+    text-transform: uppercase;
+    font-size: 54px;
+}
+
+.card-image{
+    width: 75%;
+}
+
+*{
+    text-align:center;
+    justify-content: center;
+    align-items: center;
+}
