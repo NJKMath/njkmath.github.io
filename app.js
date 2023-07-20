@@ -65887,19 +65887,7 @@ const adjustPokemon = (pokemon) => {
         return pokemonCache[pokemon.id-1];
     }
 
-    trueGen = 0;
-
-    if(activeGen < 4){
-        trueGen = activeGen;
-    } else if (activeGen == 4){
-        trueGen = 3;
-    } else if (activeGen == 5 || activeGen == 6){
-        trueGen = 4;
-    } else if (activeGen == 7 || activeGen == 8){
-        trueGen = 5;
-    } else if (activeGen == 9 || activeGen == 10){
-        trueGen = 6;
-    }
+    trueGen = findTrueGen(activeGen);
 
     genNumerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
 
@@ -65920,6 +65908,22 @@ const adjustPokemon = (pokemon) => {
     pokemonCache[pokemon.id-1].type = JSON.parse(JSON.stringify(pokemonCacheRO[pokemon.id-1].type));
 
     return pokemonCache[pokemon.id-1];
+}
+
+const findTrueGen = (activeGen) => {
+    if(activeGen < 4){
+        trueGen = activeGen;
+    } else if (activeGen == 4){
+        trueGen = 3;
+    } else if (activeGen == 5 || activeGen == 6){
+        trueGen = 4;
+    } else if (activeGen == 7 || activeGen == 8){
+        trueGen = 5;
+    } else if (activeGen == 9 || activeGen == 10){
+        trueGen = 6;
+    }
+
+    return trueGen;
 }
 
 const loadTypes = (type) => {
@@ -66025,7 +66029,7 @@ const loadSelectedTypes = () => {
     if(isLearningMove){
         if(typeLearning){
             selTypString += `<div class="learningMoveCard active" onClick = "learningMove()" style = "background-color: ${colors[typeCache[typeLearning-1].id-1]};">
-    <h2 class="learningMoveFont">Learning Move: ${typeCache[typeLearning-1].name}</h2>
+    <h2 class="learningMoveFont">Learning Move: ${(typeCache[typeLearning-1].name).toUpperCase()}</h2>
 </div>`;
         } else {
             selTypString += `<div class="learningMoveCard active" onClick = "learningMove()">
@@ -66039,7 +66043,7 @@ const loadSelectedTypes = () => {
 </div>`;
     } else {
         selTypString += `<div class="learningMoveCard" onClick = "learningMove()" style = "background-color: ${colors[typeCache[typeLearning-1].id-1]};">
-    <h2 class="learningMoveFont">Learning Move: ${typeCache[typeLearning-1].name}</h2>
+    <h2 class="learningMoveFont">Learning Move: ${(typeCache[typeLearning-1].name).toUpperCase()}</h2>
 </div>`;
     }
 
@@ -66588,15 +66592,17 @@ const adjustType = (type) => {
 
     genNumerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
 
+    trueGen = findTrueGen(activeGen);
+
     if(typeCacheRO[type-1].name === 'ghost'){
         
-        if(activeGen == 0){
+        if(trueGen == 0){
             typeCache[type-1].isweakto = JSON.parse(JSON.stringify(typeCacheRO[type-1].pastinteractions[0].damage_relations.double_damage_from));
             typeCache[type-1].resists = JSON.parse(JSON.stringify(typeCacheRO[type-1].pastinteractions[0].damage_relations.half_damage_from));
             typeCache[type-1].immunes = JSON.parse(JSON.stringify(typeCacheRO[type-1].pastinteractions[0].damage_relations.no_damage_from));
 
             return typeCache[type-1].name;
-        } else if (activeGen > 4){
+        } else if (trueGen > 4){
             return typeCacheRO[type-1].name;
         } else {
             typeCache[type-1].isweakto = JSON.parse(JSON.stringify(typeCacheRO[type-1].pastinteractions[1].damage_relations.double_damage_from));
@@ -66607,7 +66613,7 @@ const adjustType = (type) => {
     }
 
     for(let i = 0; i < 7; i++){
-        if(typeCacheRO[type-1].pastinteractions[0].generation.name === `generation-${genNumerals[i]}` && activeGen < i+1){
+        if(typeCacheRO[type-1].pastinteractions[0].generation.name === `generation-${genNumerals[i]}` && trueGen < i+1){
             typeCache[type-1].isweakto = JSON.parse(JSON.stringify(typeCacheRO[type-1].pastinteractions[0].damage_relations.double_damage_from));
             typeCache[type-1].resists = JSON.parse(JSON.stringify(typeCacheRO[type-1].pastinteractions[0].damage_relations.half_damage_from));
             typeCache[type-1].immunes = JSON.parse(JSON.stringify(typeCacheRO[type-1].pastinteractions[0].damage_relations.no_damage_from));
