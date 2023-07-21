@@ -42,6 +42,19 @@ body {
     margin-top: 5px;
 }
 
+.currentMovesetCard{
+    padding: 10px;
+    background-color: rgb(201, 152, 88);
+    color: #222;
+    height: 20px;
+    width: 100px;
+}
+
+.currentMovesetFont{
+    font-size: 13px;
+    margin-top: 0px;
+}
+
 .learningMoveCard{
     list-style: none;
     padding: 10px;

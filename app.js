@@ -52,6 +52,8 @@ checkingOptions = false;
 
 activeState = 0;
 
+updatingMoveset = false;
+
 const colors = [
 	'#A8A77A',
     '#C22E28',
@@ -66022,6 +66024,10 @@ const loadSelectedTypes = () => {
 
     selTypString = '';
 
+    selTypString += `<div class="currentMovesetCard">
+    <h2 class="currentMovesetFont">Current Moveset:</h2>
+</div>` + ` `;
+
     for (let i = 0; i < 4; i++) {
         selTypString += loadOneType(selectedTypes[i]);
     }
@@ -66047,7 +66053,7 @@ const loadSelectedTypes = () => {
 </div>`;
     }
 
-    selTypString += `<div class="evoButtonCard" onclick="overrideCalc()">
+    selTypString += `<div class="evoButtonCard" onClick="overrideCalc()">
     <h2 class="learningMoveFont">Current Coverage</h2>
 </div>`;
 
@@ -66167,17 +66173,17 @@ const loadCombos = () => {
         tempStringArray[i][7] = `<div id="wrapper><div class="numResultsBlankCard"><h2>${showCombos(i)}</h2></div></div>`;
 
     if(i < (comboArrays.length - 1 - tempMod)){
-    tempStringArray[i][0] += `<div class="comboResultsCard" style="background-color: ${colors[typeCache[selectedTypes[i]-1].id-1]};">
+    tempStringArray[i][0] += `<div class="comboResultsCard" onClick = "updateMoveset(${selectedTypes[i]})" style="background-color: ${colors[typeCache[selectedTypes[i]-1].id-1]};">
     <h2 class="resultsFont">Drop ${typeCache[selectedTypes[i]-1].name}:` + `&emsp;&emsp;`;
     } 
     
     if(i == (comboArrays.length - 2) && tempMod != 0){
-        tempStringArray[i][0] += `<div class="comboResultsCard" style="background-color: ${colors[typeCache[typeLearning-1].id-1]};">
+        tempStringArray[i][0] += `<div class="comboResultsCard" onClick = "updateMoveset(${0})" style="background-color: ${colors[typeCache[typeLearning-1].id-1]};">
         <h2 class="resultsFont">Add ${typeCache[typeLearning-1].name}:` + `&emsp;&emsp;`;
     }
 
     if(i == (comboArrays.length-1)){
-        tempStringArray[i][0] += `<div class="comboResultsCard">
+        tempStringArray[i][0] += `<div class="comboResultsCard" onClick = "updateMoveset(${-1})">
         <h2 class="resultsFont">Current Coverage:` + `&emsp;&emsp;`;
     }  
 
@@ -66224,6 +66230,28 @@ const showCombos = (row) => {
     }
     
     return tempString;
+}
+
+const updateMoveset = (num) => {
+
+    if(num == -1){
+        typeLearning = 0;
+        displayTypes();
+        overrideCalc();
+        return;
+    }
+
+    for(let i = 0; i < 4; i++){
+        if(selectedTypes[i] == num){
+            selectedTypes[i] = typeLearning;
+            typeLearning = 0;
+            loadSelectedTypes();
+            displayTypes();
+            overrideCalc();
+            return;
+            }
+        }
+    
 }
 
 const loadOneType = (id) => {
