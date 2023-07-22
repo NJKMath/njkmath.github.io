@@ -52,7 +52,7 @@ checkingOptions = false;
 
 activeState = 0;
 
-updatingMoveset = false;
+bstWeightedOn = false;
 
 const colors = [
 	'#A8A77A',
@@ -66071,11 +66071,27 @@ if(!fullEvolvedOnly){
 </div>`;
     }
 
+if(bstWeightedOn){
+    selTypString += `<div class="evoButtonCard" onClick = "toggleBSTMode()">
+    <h2 class="evoButtonFont">BST-Weighted (On)</h2>
+</div>`;
+} else {
+    selTypString += `<div class="evoButtonCard" onClick = "toggleBSTMode()">
+    <h2 class="evoButtonFont">BST-Weighted (Off)</h2>
+</div>`;
+}
+
     selectedtypes.innerHTML = selTypString;
 };
 
 const evoButton = () => {
     fullEvolvedOnly = !fullEvolvedOnly;
+    loadSelectedTypes();
+    reloadCalc();
+}
+
+const toggleBSTMode = () => {
+    bstWeightedOn = !bstWeightedOn;
     loadSelectedTypes();
     reloadCalc();
 }
@@ -66107,11 +66123,17 @@ const checkCombos = () => {
 
     tempVar = 0;
 
+    tempBSTArrays = [];
+
+    tempVar2 = [];
+
     for(let i = 0; i < 4; i++){
         if(selectedTypes[i] != 0){
             selectedTypes[i] = typeLearning;
-            comboArrays[i] = runCalc();
-            tempVar+=1;
+            tempVar2 = runCalc();
+            comboArrays[i] = tempVar2[0];
+            tempBSTArrays[i] = tempVar2[1];
+            tempVar += 1;
         } 
 
         selectedTypes = [...selTypesRO];
@@ -66128,11 +66150,15 @@ const checkCombos = () => {
 
     if(comboArrays.length != 4){
         selectedTypes[3] = typeLearning;
-        comboArrays[comboArrays.length] = runCalc();
+        tempVar2 = runCalc();
+        comboArrays[comboArrays.length] = tempVar2[0];
+        tempBSTArrays[tempBSTArrays.length] = tempVar2[1];
         selectedTypes = [...selTypesRO];
     }
 
-    comboArrays[comboArrays.length] = runCalc();
+    tempVar2 = runCalc();
+    comboArrays[comboArrays.length] = tempVar2[0];
+    tempBSTArrays[tempBSTArrays.length] = tempVar2[1];
 
     for(let i = 0; i < 5; i++){
         displayingCombosArray[i] = [];
@@ -66147,6 +66173,8 @@ const checkCombos = () => {
 
 const loadCombos = () => {
 
+    console.log(tempBSTArrays);
+
     activeState = 2;
 
     numresults.innerHTML = "";
@@ -66160,12 +66188,20 @@ const loadCombos = () => {
         }
     }
 
+    if(bstWeightedOn){
+        for(let i = 0; i < tempBSTArrays.length; i++){
+            for(let j = 0; j < 6; j++){
+                tempBSTArrays[i][j] = Number(tempBSTArrays[i][j]).toFixed(2);
+            }
+        }
+    }
+
     for(let i = 0; i < comboArrays.length; i++){
 
         for(let j = 1; j < 7; j++){
             tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})">
         <h2 class="resultsFont">`;
-            tempStringArray[i][j] += `${insertText(j-1)}${comboArrays[i][j-1].length}` + `&emsp;&emsp;`;
+            tempStringArray[i][j] += `${insertText(j-1)}${tempBSTArrays[i][j-1]}` + `&emsp;&emsp;`;
     
         tempStringArray[i][j] += `</h2></div>`;
         }
@@ -66194,8 +66230,8 @@ const loadCombos = () => {
     tempStringArray.sort(function(a,b){
         
         for(let i = 0; i < 5; i++){  
-        if(comboArrays[tempStringArray.indexOf(a)][i].length-comboArrays[tempStringArray.indexOf(b)][i].length != 0){
-            return comboArrays[tempStringArray.indexOf(a)][i].length-comboArrays[tempStringArray.indexOf(b)][i].length;
+        if(tempBSTArrays[tempStringArray.indexOf(a)][i]-tempBSTArrays[tempStringArray.indexOf(b)][i] != 0){
+            return tempBSTArrays[tempStringArray.indexOf(a)][i]-tempBSTArrays[tempStringArray.indexOf(b)][i];
         }
     }
     
@@ -66311,14 +66347,12 @@ const runCalc = () => {
 
     num4 = 0;
 
-    for(let i = 0; i < 5; i++){
-        immuneMons[i] = [];
-        doubleresMons[i] = [];
-        resMons[i] = [];
-        neutralMons[i] = [];
-        weakMons[i] = [];
-        doubleweakMons[i] = [];
-    }
+    immuneMons = [];
+    doubleresMons = [];
+    resMons = [];
+    neutralMons = [];
+    weakMons = [];
+    doubleweakMons = [];
    
     currentMults = [0, 0, 0, 0];
 
@@ -66331,28 +66365,28 @@ const runCalc = () => {
         }
         switch(Math.max(currentMults[0], currentMults[1], currentMults[2], currentMults[3])){
             case 0:
-              immuneMons[0][num0] = adjustedMon;
-              num0 += 1;
+              immuneMons[immuneMons.length] = adjustedMon;
+              num0 += returnNum(adjustedMon);
               break;
             case .25:
-              doubleresMons[0][num25] = adjustedMon;
-              num25+=1;
+              doubleresMons[doubleresMons.length] = adjustedMon;
+              num25+=returnNum(adjustedMon);
               break;
             case .5:
-                resMons[0][num5] = adjustedMon;
-                num5+=1;
+                resMons[resMons.length] = adjustedMon;
+                num5+=returnNum(adjustedMon);
                 break;
             case 1:
-                neutralMons[0][num1] = adjustedMon;
-                num1+=1;
+                neutralMons[neutralMons.length] = adjustedMon;
+                num1+=returnNum(adjustedMon);
                 break;
             case 2:
-                weakMons[0][num2] = adjustedMon;
-                num2+=1;
+                weakMons[weakMons.length] = adjustedMon;
+                num2+=returnNum(adjustedMon);
                 break;
             case 4:
-                doubleweakMons[0][num4] = adjustedMon;
-                num4+=1;
+                doubleweakMons[doubleweakMons.length] = adjustedMon;
+                num4+=returnNum(adjustedMon);
                 break;
             case 5:
                 break;
@@ -66369,28 +66403,28 @@ const runCalc = () => {
         }
         switch(Math.max(currentMults[0], currentMults[1], currentMults[2], currentMults[3])){
             case 0:
-              immuneMons[0][num0] = adjustedMon;
-              num0 += 1;
+              immuneMons[immuneMons.length] = adjustedMon;
+              num0 += returnNum(adjustedMon);
               break;
             case .25:
-              doubleresMons[0][num25] = adjustedMon;
-              num25+=1;
+              doubleresMons[doubleresMons.length] = adjustedMon;
+              num25+=returnNum(adjustedMon);
               break;
             case .5:
-                resMons[0][num5] = adjustedMon;
-                num5+=1;
+                resMons[resMons.length] = adjustedMon;
+                num5+=returnNum(adjustedMon);
                 break;
             case 1:
-                neutralMons[0][num1] = adjustedMon;
-                num1+=1;
+                neutralMons[neutralMons.length] = adjustedMon;
+                num1+=returnNum(adjustedMon);
                 break;
             case 2:
-                weakMons[0][num2] = adjustedMon;
-                num2+=1;
+                weakMons[weakMons.length] = adjustedMon;
+                num2+=returnNum(adjustedMon);
                 break;
             case 4:
-                doubleweakMons[0][num4] = adjustedMon;
-                num4+=1;
+                doubleweakMons[doubleweakMons.length] = adjustedMon;
+                num4+=returnNum(adjustedMon);
                 break;
             case 5:
                 break;
@@ -66400,12 +66434,12 @@ const runCalc = () => {
           }
     }
 
-    tempArray = [immuneMons[0], doubleresMons[0], resMons[0], neutralMons[0], weakMons[0], doubleweakMons[0]];
+    tempArray = [immuneMons, doubleresMons, resMons, neutralMons, weakMons, doubleweakMons];
 
     tempArray1 = [num0, num25, num5, num1, num2, num4];
 
     if(checkingOptions){
-        return tempArray;
+        return [tempArray, tempArray1];
     }
 
     activeState = 1;
@@ -66416,13 +66450,29 @@ const runCalc = () => {
     <h2 class="resultsFont">`;
 
     for(let i = 0; i < 6; i++){
-        numresultsHTMLString += `${insertText(i)}${tempArray[i].length}` + `&emsp;&emsp;`;
+        if(bstWeightedOn){
+        numresultsHTMLString += `${insertText(i)}${tempArray1[i].toFixed(2)}` + `&emsp;&emsp;`;
+        } else {
+        numresultsHTMLString += `${insertText(i)}${tempArray1[i]}` + `&emsp;&emsp;`;    
+        }
     }
 
     numresultsHTMLString += `</h2></div>`;
     
     numresults.innerHTML = numresultsHTMLString;
 
+}
+
+const returnNum = (mon) => {
+    if(bstWeightedOn){
+        tempBST = 0;
+        for(let i = 0; i < 6; i++){
+            tempBST += mon.basestats[i].base_stat;
+        }
+        return (tempBST/500);
+    } else {
+        return 1;
+    }
 }
 
 const displayResults = (array) => {
