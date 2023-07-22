@@ -7,6 +7,7 @@ body {
     list-style: none;
     padding: 10px;
     color: #ffffff;
+    border-radius: 12px;
 }
 
 .typeSelCard.active{
@@ -24,7 +25,8 @@ body {
     padding: 1px;
     background-color: rgb(201, 152, 88);
     height: 40px;
-    width: 80px;
+    width: 100px;
+    border-radius: 12px;
 }
 
 .evoButtonCard{
@@ -34,6 +36,7 @@ body {
     color: #222;
     height: 20px;
     width: 125px;
+    border-radius: 12px;
 }
 
 .evoButtonFont{
@@ -48,11 +51,12 @@ body {
     color: #222;
     height: 20px;
     width: 100px;
+    border-radius: 12px;
 }
 
 .currentMovesetFont{
     font-size: 13px;
-    margin-top: 0px;
+    margin-top: 3px;
 }
 
 .learningMoveCard{
@@ -62,7 +66,7 @@ body {
     color: #222;
     height: 30px;
     width: 110px;
-    
+    border-radius: 12px;
 }
 
 .learningMoveCard.active{
@@ -81,6 +85,7 @@ body {
     color: #222;
     height: 20px;
     width: 100px;
+    border-radius: 12px;
 }
 
 .checkOptionsFont{
@@ -93,8 +98,8 @@ body {
     padding: 1px;
     background-color: rgb(201, 152, 88);
     height: 40px;
-    width: 135px;
-
+    width: 150px;
+    border-radius: 12px;
 }
 
 .genSelCard.active{
@@ -107,21 +112,22 @@ body {
     background-color: rgb(143, 134, 123);
     color: #222;
     padding: 5px;
+    border-radius: 12px;
 
     height: 40px;
     width: 160px;
-    grid-gap: 1000px;
     
 }
 
 .numResultsCard{
     background-color: rgb(143, 134, 123);
     color: #222;
-    height: 60px;
+    height: 40px;
     width: 900px;
     padding: 1px;
     margin: auto;
     position: relative;
+    border-radius: 12px;
 }
 
 #wrapper{
@@ -130,13 +136,13 @@ body {
 }
 
 .comboResultsCard{
-    background-color: rgb(143, 134, 123);
+    background-color: rgba(143, 134, 123, .7);
     color: #222;
-    height: 60px;
-    width: 180px;
-    padding: 1px;
+    height: 70px;
+    width: 220px;
+    padding: 0px;
     display: inline-block;
-    position: relative;
+    border-radius: 12px;
 }
 
 .numResultsBlankCard{
@@ -167,26 +173,61 @@ body {
 
 .selTypeFont{
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 22px;
     font-weight: heavy;
-    text-shadow: 4px 4px 8px black;
+    text-shadow:
+    0.08em 0 black,
+    0 0.08em black,
+    -0.08em 0 black,
+    0 -0.08em black,
+    -0.08em -0.08em black,
+    -0.08em 0.08em black,
+    0.08em -0.08em black,
+    0.08em 0.08em black;
 }
 
 .movesetFont{
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: heavy;
+    margin-top: 10px;
 }
 
 .genSelFont{
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: heavy;
 }
 
 .resultsFont{
-    font-size: 16px;
-    font-weight: heavy;
+    margin-top: 24px;
+    margin-left: 40px;
+    font-size: 19px;
+    color: white;
+    text-shadow:
+    0.08em 0 black,
+    0 0.08em black,
+    -0.08em 0 black,
+    0 -0.08em black,
+    -0.08em -0.08em black,
+    -0.08em 0.08em black,
+    0.08em -0.08em black,
+    0.08em 0.08em black;
+}
+
+.numResultsFont{
+    margin-top: 10px;;
+    font-size: 19px;
+    color: white;
+    text-shadow:
+    0.08em 0 black,
+    0 0.08em black,
+    -0.08em 0 black,
+    0 -0.08em black,
+    -0.08em -0.08em black,
+    -0.08em 0.08em black,
+    0.08em -0.08em black,
+    0.08em 0.08em black;
 }
 
 #pokecalc{
@@ -207,13 +248,18 @@ body {
     padding-inline-start: 0;
     display: grid;
     grid-template-columns: repeat(auto-fit, 140px);
-    grid-gap: 10px;
+    grid-gap: 20px;
 }
 
 #results{
     padding-inline-start: 0;
     display: list;
     grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+}
+
+#numresults{
+    padding-inline-start: 0;
+    display: list;
 }
 
 .container{
@@ -223,6 +269,7 @@ body {
 h1 {
     text-transform: uppercase;
     font-size: 54px;
+    margin-top: 0px;
 }
 
 .card-image{

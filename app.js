@@ -66199,29 +66199,41 @@ const loadCombos = () => {
     for(let i = 0; i < comboArrays.length; i++){
 
         for(let j = 1; j < 7; j++){
-            tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})">
-        <h2 class="resultsFont">`;
-            tempStringArray[i][j] += `${insertText(j-1)}${tempBSTArrays[i][j-1]}` + `&emsp;&emsp;`;
-    
-        tempStringArray[i][j] += `</h2></div>`;
-        }
+            
+        
         
         tempStringArray[i][7] = `<div id="wrapper><div class="numResultsBlankCard"><h2>${showCombos(i)}</h2></div></div>`;
 
     if(i < (comboArrays.length - 1 - tempMod)){
-    tempStringArray[i][0] += `<div class="comboResultsCard" onClick = "updateMoveset(${selectedTypes[i]})" style="background-color: ${colors[typeCache[selectedTypes[i]-1].id-1]};">
-    <h2 class="resultsFont">Drop ${typeCache[selectedTypes[i]-1].name}:` + `&emsp;&emsp;`;
+    tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${selectedTypes[i]})" style="background-color: ${colors[typeCache[selectedTypes[i]-1].id-1]};">
+    <h2 class="resultsFont">Drop ${(typeCache[selectedTypes[i]-1].name).toUpperCase()}:` + `&emsp;&emsp;`;
+    
+    tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup((typeCache[selectedTypes[i]-1].id-1), i, j-1)};">
+    <h2 class="resultsFont">`;
+        tempStringArray[i][j] += `${insertText(j-1)}${tempBSTArrays[i][j-1]}` + `&emsp;&emsp;`;
     } 
     
     if(i == (comboArrays.length - 2) && tempMod != 0){
-        tempStringArray[i][0] += `<div class="comboResultsCard" onClick = "updateMoveset(${0})" style="background-color: ${colors[typeCache[typeLearning-1].id-1]};">
-        <h2 class="resultsFont">Add ${typeCache[typeLearning-1].name}:` + `&emsp;&emsp;`;
+        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${0})" style="background-color: ${colors[typeCache[typeLearning-1].id-1]};">
+        <h2 class="resultsFont">Add ${(typeCache[typeLearning-1].name).toUpperCase()}:` + `&emsp;&emsp;`;
+
+        tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(typeCache[typeLearning-1].id-1, i, j-1)};">
+        <h2 class="resultsFont">`;
+            tempStringArray[i][j] += `${insertText(j-1)}${tempBSTArrays[i][j-1]}` + `&emsp;&emsp;`;
+    
     }
 
     if(i == (comboArrays.length-1)){
-        tempStringArray[i][0] += `<div class="comboResultsCard" onClick = "updateMoveset(${-1})">
-        <h2 class="resultsFont">Current Coverage:` + `&emsp;&emsp;`;
-    }  
+        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${-1})">
+        <h2 class="resultsFont">Current Moves:` + `&emsp;&emsp;`;
+
+        tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(-1, i, j-1)};">
+        <h2 class="resultsFont">`;
+            tempStringArray[i][j] += `${insertText(j-1)}${tempBSTArrays[i][j-1]}` + `&emsp;&emsp;`;
+    }
+
+    tempStringArray[i][j] += `</h2></div>`;
+}  
 
     tempStringArray[i][0] += `</h2></div>`;
 
@@ -66246,6 +66258,23 @@ const loadCombos = () => {
     }
 
 
+}
+
+const styleCleanup = (num, i, j) => {
+
+    if(num == -1){
+        if(tempBSTArrays[i][j] == 0){
+            return `#F0FFFF`;
+        } else {
+            return `#8F867B`;
+        }
+    }
+
+    if(tempBSTArrays[i][j] == 0){
+        return `#F0FFFF`;
+    } else{
+        return colors[num];
+    }
 }
 
 const displayingCombos = (row, col) => {
@@ -66447,7 +66476,7 @@ const runCalc = () => {
     results.innerHTML = displayResults(tempArray);
 
     numresultsHTMLString = `<div class="numResultsCard">
-    <h2 class="resultsFont">`;
+    <h2 class="numResultsFont">`;
 
     for(let i = 0; i < 6; i++){
         if(bstWeightedOn){
@@ -66481,7 +66510,7 @@ const displayResults = (array) => {
 
     for(let i = 0; i < 6; i++){
         resultsHTMLString += `<li class="resultsCard" onclick = "displayMons(${i})">
-        <h2 class="resultsFont">${insertText(i)}${array[i].length}</h2>
+        <h2 class="numResultsFont">${insertText(i)}${array[i].length}</h2>
     </li>\n&ensp;`;
     }
 
@@ -66499,7 +66528,7 @@ const displayMons = (num) => {
 
     for(let i = 0; i < 6; i++){
         tempString += `<li class="resultsCard" onclick = "displayMons(${i})">
-        <h2 class="resultsFont">${insertText(i)}${tempArray[i].length}</h2>
+        <h2 class="numResultsFont">${insertText(i)}${tempArray[i].length}</h2>
     </li>\n\n\n&ensp;`
         if(displayingMons[i]){
             tempString += `${showMons(tempArray[i])}`;
