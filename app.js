@@ -54,6 +54,8 @@ activeState = 0;
 
 bstWeightedOn = false;
 
+lightModeOn = true;
+
 const colors = [
 	'#A8A77A',
     '#C22E28',
@@ -74,6 +76,74 @@ const colors = [
 	'#705746',
 	'#D685AD',
 ];
+
+const loadMode = () => {
+
+    tempString = ``;
+
+    tempString += `<div class = "modeCard" onClick = "changeMode(${true})" style="${checkMode(0)}";>
+    <img class = "card-image" src="${pokemonCacheRO[337].image}"/>
+    <h2 class = "modeFont" style = "color: white";>Light Mode</h2>
+   </div>`;
+
+   tempString += `<div class = "modeCard" onClick = "changeMode(${false})" style="${checkMode(1)}";>
+   <img class = "card-image" src="${pokemonCacheRO[336].image}"/>
+   <h2 class = "modeFont">Dark Mode</h2>
+  </div>`;
+
+   brightmode.innerHTML = tempString;
+}
+
+const changeMode = (bool) => {
+
+    lightModeOn = bool;
+
+    if(lightModeOn){
+        document.body.style.backgroundColor = "azure";
+        document.getElementsByTagName('H1')[0].style.color = "black";
+    } else {
+        document.body.style.backgroundColor = "#121212";
+        document.getElementsByTagName('H1')[0].style.color = "white";
+    }
+
+    loadMode();
+    reloadCalc();
+}
+
+const checkMode = (num) => {
+
+    if(num == 0){
+        if(!lightModeOn){
+            return `opacity: .4`;
+        } else {
+            return `opacity: 1`;
+        }
+    }
+
+    if(num == 1){
+        if(lightModeOn){
+            return `opacity: .4`;
+        } else {
+            return `opacity: 1`;
+        }
+    }
+}
+
+const checkColorFont = () => {
+    if(lightModeOn){
+        return "#000000";
+    } else {
+        return "#FFFFFF";
+    }
+}
+
+const checkColorCombos = () => {
+    if(lightModeOn){
+        return "azure";
+    } else {
+        return "#121212";
+    }
+}
 
 const loadPokemon = () => {
 
@@ -65778,6 +65848,7 @@ const loadCalc = () => {
     loadSelectedTypes();
     loadPokemon();
     displayGenSelect();
+    loadMode();
 };
 
 const displayGenSelect = () => {
@@ -65812,6 +65883,9 @@ const selectGen = (i) => {
 }
 
 const reloadCalc = () => {
+
+    displayTypes();
+    
     if(activeState == 1){
         runCalc();
         return;
@@ -65959,7 +66033,7 @@ const displayTypes = () => {
      <h2 class = "selTypeFont">${typeCacheRO[i].name}</h2>
     </li>`;
     } else {
-        typeHTMLString += `<li class ="typeSelCard active" onclick = "cacheType(${typeCacheRO[i].id})" style = "background-color: ${colors[typeCacheRO[i].id-1]};">
+        typeHTMLString += `<li class ="typeSelCard active" onclick = "cacheType(${typeCacheRO[i].id})" style = "background-color: ${colors[typeCacheRO[i].id-1]}; border: 5px solid ${checkColorFont()};">
      <h2 class = "selTypeFont">${typeCacheRO[i].name}</h2>
     </li>`;
     }
@@ -66198,9 +66272,7 @@ const loadCombos = () => {
 
     for(let i = 0; i < comboArrays.length; i++){
 
-        for(let j = 1; j < 7; j++){
-            
-        
+        for(let j = 1; j < 7; j++){           
         
         tempStringArray[i][7] = `<div id="wrapper><div class="numResultsBlankCard"><h2>${showCombos(i)}</h2></div></div>`;
 
@@ -66264,14 +66336,14 @@ const styleCleanup = (num, i, j) => {
 
     if(num == -1){
         if(tempBSTArrays[i][j] == 0){
-            return `#F0FFFF`;
+            return `${checkColorCombos()}`;
         } else {
             return `#8F867B`;
         }
     }
 
     if(tempBSTArrays[i][j] == 0){
-        return `#F0FFFF`;
+        return `${checkColorCombos()}`;
     } else{
         return colors[num];
     }
@@ -66290,7 +66362,7 @@ const showCombos = (row) => {
 
     for(i = 0; i < 6; i++){
         if(displayingCombosArray[row][i]){
-        tempString += `<br></br>` + `${insertText(i)}` + `${showMons(comboArrays[row][i])}` ;
+        tempString += `<br></br>` + `<h2  style="color: ${checkColorFont()}";>${insertText(i)}</h2>` + `${showMons(comboArrays[row][i])}` ;
         }
     }
     

@@ -268,12 +268,34 @@ body {
 
 h1 {
     text-transform: uppercase;
-    font-size: 54px;
+    font-size: 48px;
     margin-top: 0px;
 }
 
 .card-image{
     width: 75%;
+}
+
+#brightmode{
+    padding-inline-start: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 100px);
+}
+
+.modeCard{
+    background-color: rgb(143, 134, 123);
+    color: #222;
+    height: 95px;
+    width: 95px;
+    padding: 1px;
+    border-radius: 12px;
+}
+
+.modeFont{
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: heavy;
+    margin-top: 0px;
 }
 
 *{
