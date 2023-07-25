@@ -135,6 +135,7 @@ body {
     height: 30px;
     width: 120px;
     border-radius: 12px;
+    border: 1px solid black;
 }
 
 .checkOptionsFont{
