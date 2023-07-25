@@ -52,6 +52,7 @@ body {
     height: 40px;
     width: 140px;
     border-radius: 12px;
+    border: 1px solid black;
 }
 
 .calcFont{
