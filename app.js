@@ -65885,7 +65885,8 @@ const selectGen = (i) => {
 const reloadCalc = () => {
 
     displayTypes();
-    
+    loadSelectedTypes();
+
     if(activeState == 1){
         runCalc();
         return;
@@ -65895,6 +65896,9 @@ const reloadCalc = () => {
         checkCombos();
         return;
     }
+
+    numresults.innerHTML = "";
+    result.innerHTML = "";
 }
 
 const adjustPokemon = (pokemon) => {
@@ -66064,15 +66068,13 @@ const cacheType = (id) => {
 
     if(isLearningMove && typeLearning!=id){
         typeLearning = id;
-        displayTypes();
-        loadSelectedTypes();
+        reloadCalc();
         return;
     }
 
     if(typeLearning == id){
         typeLearning = 0;
-        displayTypes();
-        loadSelectedTypes();
+        reloadCalc();
         return;
     }
 
@@ -66086,8 +66088,7 @@ const cacheType = (id) => {
     for (let i = 0; i < 4; i++) {
         if(selectedTypes[i] == 0){
             selectedTypes[i] = id;
-            displayTypes();
-            loadSelectedTypes();
+            reloadCalc();
             return;
         }
     }
@@ -66099,7 +66100,7 @@ const loadSelectedTypes = () => {
     selTypString = '';
 
     selTypString += `<div class="currentMovesetCard">
-    <h2 class="currentMovesetFont">Current Moveset:</h2>
+    <h2 class="currentMovesetFont">Current Moves:</h2>
 </div>` + ` `;
 
     for (let i = 0; i < 4; i++) {
@@ -66109,11 +66110,11 @@ const loadSelectedTypes = () => {
     if(isLearningMove){
         if(typeLearning){
             selTypString += `<div class="learningMoveCard active" onClick = "learningMove()" style = "background-color: ${colors[typeCache[typeLearning-1].id-1]};">
-    <h2 class="learningMoveFont">Learning Move: ${(typeCache[typeLearning-1].name).toUpperCase()}</h2>
+    <h2 class="learningMoveFont">Learning Move: \n ${(typeCache[typeLearning-1].name).toUpperCase()}</h2>
 </div>`;
         } else {
             selTypString += `<div class="learningMoveCard active" onClick = "learningMove()">
-    <h2 class="learningMoveFont">Learning Move: (Click a type)</h2>
+    <h2 class="learningMoveFont">Learning Move: \n (Click a type)</h2>
 </div>`;
         }
         
@@ -66123,15 +66124,15 @@ const loadSelectedTypes = () => {
 </div>`;
     } else {
         selTypString += `<div class="learningMoveCard" onClick = "learningMove()" style = "background-color: ${colors[typeCache[typeLearning-1].id-1]};">
-    <h2 class="learningMoveFont">Learning Move: ${(typeCache[typeLearning-1].name).toUpperCase()}</h2>
+    <h2 class="learningMoveFont">Learning Move: \n ${(typeCache[typeLearning-1].name).toUpperCase()}</h2>
 </div>`;
     }
 
-    selTypString += `<div class="evoButtonCard" onClick="overrideCalc()">
-    <h2 class="learningMoveFont">Current Coverage</h2>
+    selTypString += `<div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()};">
+    <h2 class="calcFont">Current Coverage</h2>
 </div>`;
 
-    selTypString += `<div class="checkOptionsCard" onClick = "checkCombos()">
+    selTypString += `<div class="checkOptionsCard" onClick = "checkCombos()" style = "background: ${displayCheckOptionsColor()}">
     <h2 class="checkOptionsFont">Check Options</h2>
 </div>`;
 
@@ -66162,6 +66163,17 @@ const evoButton = () => {
     fullEvolvedOnly = !fullEvolvedOnly;
     loadSelectedTypes();
     reloadCalc();
+}
+
+const displayCheckOptionsColor = () => {
+
+    if(typeLearning){
+        return `repeating-linear-gradient(-45deg,
+            ${colors[typeLearning-1]},
+            ${colors[typeLearning-1]} 3px,
+            #00000000 3px,
+            #00000000 10px), ${displayCalcColor()}`
+    } 
 }
 
 const toggleBSTMode = () => {
@@ -66373,8 +66385,8 @@ const updateMoveset = (num) => {
 
     if(num == -1){
         typeLearning = 0;
-        displayTypes();
-        overrideCalc();
+        activeState = 0;
+        reloadCalc();
         return;
     }
 
@@ -66382,9 +66394,8 @@ const updateMoveset = (num) => {
         if(selectedTypes[i] == num){
             selectedTypes[i] = typeLearning;
             typeLearning = 0;
-            loadSelectedTypes();
-            displayTypes();
-            overrideCalc();
+            activeState = 0;
+            reloadCalc();
             return;
             }
         }
@@ -66412,11 +66423,11 @@ const removeSlot = (id) => {
         if (selectedTypes[i] === id) {
             selectedTypes.splice(i,1);
             selectedTypes.push(0);
-            displayTypes();
+            reloadCalc();
         }
     }
     
-    loadSelectedTypes();
+    reloadCalc();
 }
 
 const overrideCalc = () => {
@@ -66573,6 +66584,30 @@ const returnNum = (mon) => {
         return (tempBST/500);
     } else {
         return 1;
+    }
+}
+
+const displayCalcColor = () => {
+    trueLen = 0;
+    for(let i = 0; i < 4; i++){
+        if(selectedTypes[i] != 0){
+            trueLen+=1;
+        }
+    }
+
+    switch (trueLen) {
+        case 0:
+            break;
+        case 1:
+            return `${colors[selectedTypes[0]]};`;
+        case 2:
+            return `linear-gradient(to right, ${colors[selectedTypes[0]-1]} 50%, ${colors[selectedTypes[1]-1]} 50% 100%);`
+        case 3:
+            return `linear-gradient(to right, ${colors[selectedTypes[0]-1]} 31%, ${colors[selectedTypes[1]-1]} 31% 69%, ${colors[selectedTypes[2]-1]} 69% 100%);`
+        case 4:
+            return `linear-gradient(to right, ${colors[selectedTypes[0]-1]} 23%, ${colors[selectedTypes[1]-1]} 23% 50%, ${colors[selectedTypes[2]-1]} 50% 77%, ${colors[selectedTypes[3]-1]} 77% 100%);`
+        default:
+            break;
     }
 }
 
