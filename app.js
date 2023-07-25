@@ -66107,6 +66107,10 @@ const loadSelectedTypes = () => {
         selTypString += loadOneType(selectedTypes[i]);
     }
 
+    selTypString += `<div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()};">
+    <h2 class="calcFont">Current Coverage</h2>
+</div>`;
+
     if(isLearningMove){
         if(typeLearning){
             selTypString += `<div class="learningMoveCard active" onClick = "learningMove()" style = "background-color: ${colors[typeCache[typeLearning-1].id-1]};">
@@ -66127,10 +66131,6 @@ const loadSelectedTypes = () => {
     <h2 class="learningMoveFont">Learning Move: \n ${(typeCache[typeLearning-1].name).toUpperCase()}</h2>
 </div>`;
     }
-
-    selTypString += `<div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()};">
-    <h2 class="calcFont">Current Coverage</h2>
-</div>`;
 
     selTypString += `<div class="checkOptionsCard" onClick = "checkCombos()" style = "background: ${displayCheckOptionsColor()}">
     <h2 class="checkOptionsFont">Check Options</h2>
