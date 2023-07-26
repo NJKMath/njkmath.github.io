@@ -66107,7 +66107,7 @@ const loadSelectedTypes = () => {
         selTypString += loadOneType(selectedTypes[i]);
     }
 
-    selTypString += `<div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()};">
+    selTypString += `<div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()}; border: 1px solid ${checkColorFont()};">
     <h2 class="calcFont">Current Coverage</h2>
 </div>`;
 
@@ -66132,7 +66132,7 @@ const loadSelectedTypes = () => {
 </div>`;
     }
 
-    selTypString += `<div class="checkOptionsCard" onClick = "checkCombos()" style = "background: ${displayCheckOptionsColor()}">
+    selTypString += `<div class="checkOptionsCard" onClick = "checkCombos()" style = "background: ${displayCheckOptionsColor()}; border: 1px solid ${checkColorFont()};">
     <h2 class="checkOptionsFont">Check Options</h2>
 </div>`;
 
@@ -66599,7 +66599,7 @@ const displayCalcColor = () => {
         case 0:
             break;
         case 1:
-            return `${colors[selectedTypes[0]]};`;
+            return `${colors[selectedTypes[0]-1]};`;
         case 2:
             return `linear-gradient(to right, ${colors[selectedTypes[0]-1]} 50%, ${colors[selectedTypes[1]-1]} 50% 100%);`
         case 3:
