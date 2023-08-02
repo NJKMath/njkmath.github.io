@@ -56,6 +56,8 @@ bstWeightedOn = false;
 
 lightModeOn = true;
 
+movesLocked = [false, false, false, false];
+
 const colors = [
 	'#A8A77A',
     '#C22E28',
@@ -81,15 +83,17 @@ const loadMode = () => {
 
     tempString = ``;
 
-    tempString += `<div class = "modeCard" onClick = "changeMode(${true})" style="${checkMode(0)}";>
+    tempString += `<div class = "modeCard" onClick = "changeMode(${true})" style="${checkMode(0)}; scale: .8; position:absolute; left:20px; top:20px;">
     <img class = "card-image" src="${pokemonCacheRO[337].image}"/>
     <h2 class = "modeFont" style = "color: white";>Light Mode</h2>
    </div>`;
 
-   tempString += `<div class = "modeCard" onClick = "changeMode(${false})" style="${checkMode(1)}";>
+   tempString += `<div class = "modeCard" onClick = "changeMode(${false})" style="${checkMode(1)}; scale: .8;position:absolute; left:100px; top:20px;">
    <img class = "card-image" src="${pokemonCacheRO[336].image}"/>
    <h2 class = "modeFont">Dark Mode</h2>
-  </div>`;
+  </div><br></br>`;
+
+  tempString += `<h1 style = "position:absolute; top:40px;">Ironmon Coverage Calc</h1>`;
 
    brightmode.innerHTML = tempString;
 }
@@ -65845,8 +65849,8 @@ const loadCalc = () => {
         }
     }
 
-    loadSelectedTypes();
     loadPokemon();
+    loadSelectedTypes();
     displayGenSelect();
     loadMode();
 };
@@ -65898,7 +65902,7 @@ const reloadCalc = () => {
     }
 
     numresults.innerHTML = "";
-    result.innerHTML = "";
+    results.innerHTML = "";
 }
 
 const adjustPokemon = (pokemon) => {
@@ -66086,7 +66090,7 @@ const cacheType = (id) => {
     }
 
     for (let i = 0; i < 4; i++) {
-        if(selectedTypes[i] == 0){
+        if(selectedTypes[i] == 0 && !movesLocked[i]){
             selectedTypes[i] = id;
             reloadCalc();
             return;
@@ -66104,7 +66108,7 @@ const loadSelectedTypes = () => {
 </div>` + ` `;
 
     for (let i = 0; i < 4; i++) {
-        selTypString += loadOneType(selectedTypes[i]);
+        selTypString += loadOneType(i);
     }
 
     selTypString += `<div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()}; border: 1px solid ${checkColorFont()};">
@@ -66123,7 +66127,7 @@ const loadSelectedTypes = () => {
         }
         
     } else if (!typeLearning) {
-    selTypString += `<div class="learningMoveCard" onClick = "learningMove()">
+    selTypString += `<div class="learningMoveCard" onClick = "learningMove()" style = "border: 1px solid ${checkColorFont()};">
     <h2 class="learningMoveFont">Learning Move: \n (Click to select)</h2>
 </div>`;
     } else {
@@ -66207,19 +66211,16 @@ const checkCombos = () => {
 
     comboArrays = [];
 
-    tempVar = 0;
-
     tempBSTArrays = [];
 
     tempVar2 = [];
 
     for(let i = 0; i < 4; i++){
-        if(selectedTypes[i] != 0){
+        if(selectedTypes[i] != 0 && !movesLocked[i]){
             selectedTypes[i] = typeLearning;
             tempVar2 = runCalc();
             comboArrays[i] = tempVar2[0];
             tempBSTArrays[i] = tempVar2[1];
-            tempVar += 1;
         } 
 
         selectedTypes = [...selTypesRO];
@@ -66228,14 +66229,21 @@ const checkCombos = () => {
 
     tempMod = 0;
 
-    if(tempVar != 4){
-        tempMod = 1;
+    for(let i = 0; i < 4; i++){
+        if(selectedTypes[i] == 0 && !movesLocked[i]){
+            tempMod = 1;
+        }
     }
 
     tempStringArray = [];
 
-    if(comboArrays.length != 4){
-        selectedTypes[3] = typeLearning;
+    if(tempMod == 1){
+        for(let i = 0; i < 4; i++){
+            if(selectedTypes[i] == 0 && !movesLocked[i]){
+            selectedTypes[i] = typeLearning;
+            }
+        }
+        
         tempVar2 = runCalc();
         comboArrays[comboArrays.length] = tempVar2[0];
         tempBSTArrays[tempBSTArrays.length] = tempVar2[1];
@@ -66252,6 +66260,14 @@ const checkCombos = () => {
             displayingCombosArray[i][j] = false;
         }
     }
+
+    comboArrays = comboArrays.filter(function (el) {
+        return el != null;
+      });
+
+      tempBSTArrays = tempBSTArrays.filter(function (el) {
+        return el != null;
+      });  
     
     loadCombos();
 
@@ -66259,7 +66275,23 @@ const checkCombos = () => {
 
 const loadCombos = () => {
 
-    console.log(tempBSTArrays);
+    
+
+    storeSelTypes = [...selectedTypes];
+
+    selectedTypes.sort(function(a,b){
+        if(movesLocked[selectedTypes.indexOf(a)]&&movesLocked[selectedTypes.indexOf(b)]){
+            return 0;
+        } else if (movesLocked[selectedTypes.indexOf(a)]&&!movesLocked[selectedTypes.indexOf(b)]){
+            return 1;
+        } else if (!movesLocked[selectedTypes.indexOf(a)]&&movesLocked[selectedTypes.indexOf(b)]){
+            return -1;
+        } else {
+            return 0;
+        }
+    });
+
+    console.log(selectedTypes);
 
     activeState = 2;
 
@@ -66289,7 +66321,7 @@ const loadCombos = () => {
         tempStringArray[i][7] = `<div id="wrapper><div class="numResultsBlankCard"><h2>${showCombos(i)}</h2></div></div>`;
 
     if(i < (comboArrays.length - 1 - tempMod)){
-    tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${selectedTypes[i]})" style="background-color: ${colors[typeCache[selectedTypes[i]-1].id-1]};">
+    tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${selectedTypes[i]})" style="background-color: ${colors[typeCache[selectedTypes[i]-1].id-1]}; border: 1px solid black;">
     <h2 class="resultsFont">Drop ${(typeCache[selectedTypes[i]-1].name).toUpperCase()}:` + `&emsp;&emsp;`;
     
     tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup((typeCache[selectedTypes[i]-1].id-1), i, j-1)};">
@@ -66298,7 +66330,7 @@ const loadCombos = () => {
     } 
     
     if(i == (comboArrays.length - 2) && tempMod != 0){
-        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${0})" style="background-color: ${colors[typeCache[typeLearning-1].id-1]};">
+        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${0})" style="background-color: ${colors[typeCache[typeLearning-1].id-1]}; border: 1px solid black;">
         <h2 class="resultsFont">Add ${(typeCache[typeLearning-1].name).toUpperCase()}:` + `&emsp;&emsp;`;
 
         tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(typeCache[typeLearning-1].id-1, i, j-1)};">
@@ -66308,7 +66340,7 @@ const loadCombos = () => {
     }
 
     if(i == (comboArrays.length-1)){
-        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${-1})">
+        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${-1})" style = "border: 1px solid black;">
         <h2 class="resultsFont">Current Moves:` + `&emsp;&emsp;`;
 
         tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(-1, i, j-1)};">
@@ -66341,7 +66373,7 @@ const loadCombos = () => {
         numresults.innerHTML += tempStringArray[i].join(` `) + `\n`;
     }
 
-
+    selectedTypes = [...storeSelTypes];
 }
 
 const styleCleanup = (num, i, j) => {
@@ -66402,15 +66434,17 @@ const updateMoveset = (num) => {
     
 }
 
-const loadOneType = (id) => {
+const loadOneType = (i) => {
 
-    if(id == 0){
-        oneTypeCard = `<div class="selectedTypeCard">
-            <h2 class="movesetFont">N/A</h2>
+    if(selectedTypes[i] == 0){
+        oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})">
+            <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} N/A</h2>
+            <img class = "card-image" style = "scale: .6; position: relative; top: -60px; left: 60px; opacity: ${movesLockedOpacity(i)};" src="${pokemonCacheRO[706].image}"/>
     </div>`
     }else{
-    oneTypeCard = `<div class="selectedTypeCard" onclick="removeSlot(${id})" style="background-color: ${colors[id-1]};">
-            <h2 class="movesetFont">${typeCache[id-1].name}</h2>
+    oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style="background-color: ${colors[selectedTypes[i]-1]};">
+            <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} ${typeCache[selectedTypes[i]-1].name}</h2>
+            <img class = "card-image" style = "scale: .6; position: relative; top: -60px; left: 60px; opacity: ${movesLockedOpacity(i)};" src="${pokemonCacheRO[706].image}"/>
     </div>`
     }
 
@@ -66420,13 +66454,42 @@ const loadOneType = (id) => {
 const removeSlot = (id) => {
 
     for (let i = 0; i < 4; i++) {
-        if (selectedTypes[i] === id) {
-            selectedTypes.splice(i,1);
-            selectedTypes.push(0);
+        if (selectedTypes[i] === id && !movesLocked[i]) {
+            selectedTypes[i] = 0;
             reloadCalc();
         }
     }
     
+    reloadCalc();
+}
+
+const displayIfLocked = (i) => {
+    if(movesLocked[i]){
+        return `&#x1f512;`;
+    } else {
+        return ``;
+    }
+}
+
+const checkMarginLocked = (i) => {
+    if(movesLocked[i]){
+        return `margin-top: 15px;`;
+    } else {
+        return;
+    }
+
+}
+
+const movesLockedOpacity = (i) => {
+    if(movesLocked[i]){
+        return 1;
+    } else {
+        return .5;
+    }
+}
+
+const lockMove = (i) => {
+    movesLocked[i] = !movesLocked[i];
     reloadCalc();
 }
 
@@ -66588,9 +66651,12 @@ const returnNum = (mon) => {
 }
 
 const displayCalcColor = () => {
+    trueColors = [];
     trueLen = 0;
+
     for(let i = 0; i < 4; i++){
         if(selectedTypes[i] != 0){
+            trueColors[trueLen] = selectedTypes[i];
             trueLen+=1;
         }
     }
@@ -66599,13 +66665,13 @@ const displayCalcColor = () => {
         case 0:
             break;
         case 1:
-            return `${colors[selectedTypes[0]-1]};`;
+            return `${colors[trueColors[0]-1]};`;
         case 2:
-            return `linear-gradient(to right, ${colors[selectedTypes[0]-1]} 50%, ${colors[selectedTypes[1]-1]} 50% 100%);`
+            return `linear-gradient(to right, ${colors[trueColors[0]-1]} 50%, ${colors[trueColors[1]-1]} 50% 100%);`
         case 3:
-            return `linear-gradient(to right, ${colors[selectedTypes[0]-1]} 31%, ${colors[selectedTypes[1]-1]} 31% 69%, ${colors[selectedTypes[2]-1]} 69% 100%);`
+            return `linear-gradient(to right, ${colors[trueColors[0]-1]} 31%, ${colors[trueColors[1]-1]} 31% 69%, ${colors[trueColors[2]-1]} 69% 100%);`
         case 4:
-            return `linear-gradient(to right, ${colors[selectedTypes[0]-1]} 23%, ${colors[selectedTypes[1]-1]} 23% 50%, ${colors[selectedTypes[2]-1]} 50% 77%, ${colors[selectedTypes[3]-1]} 77% 100%);`
+            return `linear-gradient(to right, ${colors[trueColors[0]-1]} 23%, ${colors[trueColors[1]-1]} 23% 50%, ${colors[trueColors[2]-1]} 50% 77%, ${colors[trueColors[3]-1]} 77% 100%);`
         default:
             break;
     }
