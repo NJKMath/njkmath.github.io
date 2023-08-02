@@ -66275,11 +66275,14 @@ const checkCombos = () => {
 
 const loadCombos = () => {
 
-    
-
     storeSelTypes = [...selectedTypes];
 
     selectedTypes.sort(function(a,b){
+
+        if(!movesLocked[selectedTypes.indexOf(b)] && b == 0){
+            return -1;
+        }
+
         if(movesLocked[selectedTypes.indexOf(a)]&&movesLocked[selectedTypes.indexOf(b)]){
             return 0;
         } else if (movesLocked[selectedTypes.indexOf(a)]&&!movesLocked[selectedTypes.indexOf(b)]){
