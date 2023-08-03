@@ -40,15 +40,25 @@ body {
     padding: 10px;
     background-color: rgb(201, 152, 88);
     color: #222;
-    height: 20px;
+    height: 30px;
     width: 125px;
     border-radius: 12px;
 }
 
 .evoButtonFont{
-    font-size: 12px;
+    font-size: 16px;
     font-weight: heavy;
-    margin-top: 5px;
+    margin-top: -2px;
+    color: white;
+    text-shadow:
+    0.08em 0 black,
+    0 0.08em black,
+    -0.08em 0 black,
+    0 -0.08em black,
+    -0.08em -0.08em black,
+    -0.08em 0.08em black,
+    0.08em -0.08em black,
+    0.08em 0.08em black;
 }
 
 .calcCard{
@@ -197,6 +207,13 @@ body {
     border-radius: 12px;
 }
 
+.unownQCard{
+    background-color: rgb(201, 152, 88);
+    height: 70px;
+    width: 70px;
+    border-radius: 12px;
+}
+
 #wrapper{
     float: right;
     width: 200px;
@@ -275,6 +292,16 @@ body {
     text-transform: uppercase;
     font-size: 15px;
     font-weight: heavy;
+    color: white;
+    text-shadow:
+    0.08em 0 black,
+    0 0.08em black,
+    -0.08em 0 black,
+    0 -0.08em black,
+    -0.08em -0.08em black,
+    -0.08em 0.08em black,
+    0.08em -0.08em black,
+    0.08em 0.08em black;
 }
 
 .resultsFont{
@@ -320,6 +347,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
     grid-gap: 70px;
+    scale: .95;
 }
 
 #genSelect{

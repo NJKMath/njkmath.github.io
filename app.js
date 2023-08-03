@@ -58,6 +58,10 @@ lightModeOn = true;
 
 movesLocked = [false, false, false, false];
 
+eeveeCounter = 0;
+
+unownQimage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/201-question.png`;
+
 const colors = [
 	'#A8A77A',
     '#C22E28',
@@ -93,9 +97,76 @@ const loadMode = () => {
    <h2 class = "modeFont">Dark Mode</h2>
   </div><br></br>`;
 
-  tempString += `<h1 style = "position:absolute; top:40px;">Ironmon Coverage Calc</h1>`;
+    tempString += `<div class="evoButtonCard" style = "position:absolute; left:250px; top:80px; border: 1px solid ${checkColorFont()};"onClick = "evoButton()">
+    <h2 class="evoButtonFont">Fully Evolved Only ${returnFullEvoText()}</h2>
+    <img class = "card-image" style = "scale: .8; position: relative; top: -122px;" src="${returnEeveeImage()}"/>
+</div>`;
+
+    tempString += `<div class="evoButtonCard" style = "position:absolute; left:450px; top:80px; border: 1px solid ${checkColorFont()};" onClick = "toggleBSTMode()">
+    <h2 class="evoButtonFont">BST-Weighted ${returnBSTWeightText()}</h2>
+</div>`;
+
+
+  tempString += `<h1 style = "position:absolute; top:40px; color: ${checkColorFont()};">Ironmon Coverage Calc</h1>`;
 
    brightmode.innerHTML = tempString;
+}
+
+const returnFullEvoText = () => {
+    if(fullEvolvedOnly){
+        return `(On)`;
+    } else {
+        return `(Off)`;
+    }
+}
+
+const returnBSTWeightText = () => {
+    if(bstWeightedOn){
+        return `(On)`;
+    } else {
+        return `(Off)`;
+    }
+}
+
+const returnEeveeImage = () => {
+
+    if(!fullEvolvedOnly){
+        eeveeCounter += 1;
+        return pokemonCacheRO[132].image;
+    }
+
+    if(eeveeCounter == 9){
+        eeveeCounter = 1;
+    }
+    
+    switch (eeveeCounter) {
+        case 1:
+            return pokemonCacheRO[133].image; 
+            break;
+        case 2:
+            return pokemonCacheRO[134].image; 
+            break;
+        case 3:
+            return pokemonCacheRO[135].image; 
+            break;
+        case 4:
+            return pokemonCacheRO[195].image; 
+            break;
+        case 5:
+            return pokemonCacheRO[196].image; 
+            break;
+        case 6:
+            return pokemonCacheRO[469].image; 
+            break;
+        case 7:
+            return pokemonCacheRO[470].image; 
+            break;
+        case 8:
+            return pokemonCacheRO[699].image; 
+            break;
+        default:
+            break;
+    }
 }
 
 const changeMode = (bool) => {
@@ -65888,6 +65959,7 @@ const selectGen = (i) => {
 
 const reloadCalc = () => {
 
+    loadMode();
     displayTypes();
     loadSelectedTypes();
 
@@ -66105,7 +66177,7 @@ const loadSelectedTypes = () => {
 
     selTypString += `<div class="currentMovesetCard">
     <h2 class="currentMovesetFont">Current Moves:</h2>
-</div>` + ` `;
+</div>`;
 
     for (let i = 0; i < 4; i++) {
         selTypString += loadOneType(i);
@@ -66140,25 +66212,9 @@ const loadSelectedTypes = () => {
     <h2 class="checkOptionsFont">Check Options</h2>
 </div>`;
 
-if(!fullEvolvedOnly){
-    selTypString += `<div class="evoButtonCard" onClick = "evoButton()">
-    <h2 class="evoButtonFont">Fully Evolved Only (Off)</h2>
+selTypString += `<div class="unownQCard" style = "border: 1px solid ${checkColorFont()};">
+<img class = "card-image" style = "scale: 2; position: relative; top: 10px;" src="${unownQimage}"/>
 </div>`;
-    } else {
-        selTypString += `<div class="evoButtonCard" onClick = "evoButton()">
-    <h2 class="evoButtonFont">Fully Evolved Only (On)</h2>
-</div>`;
-    }
-
-if(bstWeightedOn){
-    selTypString += `<div class="evoButtonCard" onClick = "toggleBSTMode()">
-    <h2 class="evoButtonFont">BST-Weighted (On)</h2>
-</div>`;
-} else {
-    selTypString += `<div class="evoButtonCard" onClick = "toggleBSTMode()">
-    <h2 class="evoButtonFont">BST-Weighted (Off)</h2>
-</div>`;
-}
 
     selectedtypes.innerHTML = selTypString;
 };
