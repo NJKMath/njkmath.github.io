@@ -62,6 +62,12 @@ eeveeCounter = 0;
 
 unownQimage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/201-question.png`;
 
+faqModeOn = false;
+
+avgBSTArray = [407.64, 407.46, 406.15, 414.75, 417.30, 420.21, 421.78, 430.68, 435.78, 436.70, 438.19];
+
+avgBSTArrayFE = [484.59, 481.62, 481.73, 495.06, 496.53, 499.97, 501.76, 511.58, 516.76, 515.90, 517.29];
+
 const colors = [
 	'#A8A77A',
     '#C22E28',
@@ -97,17 +103,17 @@ const loadMode = () => {
    <h2 class = "modeFont">Dark Mode</h2>
   </div><br></br>`;
 
-    tempString += `<div class="evoButtonCard" style = "position:absolute; left:250px; top:80px; border: 1px solid ${checkColorFont()};"onClick = "evoButton()">
+    tempString += `<div class="evoButtonCard" style = "position:absolute; left:250px; top:80px; border: ${checkColorFont(true)};"onClick = "evoButton()">
     <h2 class="evoButtonFont">Fully Evolved Only ${returnFullEvoText()}</h2>
     <img class = "card-image" style = "scale: .8; position: relative; top: -122px;" src="${returnEeveeImage()}"/>
 </div>`;
 
-    tempString += `<div class="evoButtonCard" style = "position:absolute; left:450px; top:80px; border: 1px solid ${checkColorFont()};" onClick = "toggleBSTMode()">
+    tempString += `<div class="evoButtonCard" style = "position:absolute; left:450px; top:80px; border: ${checkColorFont(true)};" onClick = "toggleBSTMode()">
     <h2 class="evoButtonFont">BST-Weighted ${returnBSTWeightText()}</h2>
 </div>`;
 
 
-  tempString += `<h1 style = "position:absolute; top:40px; color: ${checkColorFont()};">Ironmon Coverage Calc</h1>`;
+  tempString += `<h1 style = "position:absolute; top:40px; color: ${checkColorFontBW(false)};">Ironmon Coverage Calc</h1>`;
 
    brightmode.innerHTML = tempString;
 }
@@ -135,7 +141,7 @@ const returnEeveeImage = () => {
         return pokemonCacheRO[132].image;
     }
 
-    if(eeveeCounter == 9){
+    if(eeveeCounter >= 9){
         eeveeCounter = 1;
     }
     
@@ -165,6 +171,7 @@ const returnEeveeImage = () => {
             return pokemonCacheRO[699].image; 
             break;
         default:
+            return unownQimage;
             break;
     }
 }
@@ -204,11 +211,15 @@ const checkMode = (num) => {
     }
 }
 
-const checkColorFont = () => {
+const checkColorFont = (yellow) => {
+    if(faqModeOn && yellow){
+        return "5px solid blue;";
+    }
+
     if(lightModeOn){
-        return "#000000";
+        return "1px solid #000000;";
     } else {
-        return "#FFFFFF";
+        return "1px solid #FFFFFF;";
     }
 }
 
@@ -65973,8 +65984,10 @@ const reloadCalc = () => {
         return;
     }
 
+    if(!faqModeOn){
     numresults.innerHTML = "";
     results.innerHTML = "";
+    }
 }
 
 const adjustPokemon = (pokemon) => {
@@ -66113,7 +66126,7 @@ const displayTypes = () => {
      <h2 class = "selTypeFont">${typeCacheRO[i].name}</h2>
     </li>`;
     } else {
-        typeHTMLString += `<li class ="typeSelCard active" onclick = "cacheType(${typeCacheRO[i].id})" style = "background-color: ${colors[typeCacheRO[i].id-1]}; border: 5px solid ${checkColorFont()};">
+        typeHTMLString += `<li class ="typeSelCard active" onclick = "cacheType(${typeCacheRO[i].id})" style = "background-color: ${colors[typeCacheRO[i].id-1]}; border: ${checkColorFont(false)};">
      <h2 class = "selTypeFont">${typeCacheRO[i].name}</h2>
     </li>`;
     }
@@ -66183,7 +66196,7 @@ const loadSelectedTypes = () => {
         selTypString += loadOneType(i);
     }
 
-    selTypString += `<div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()}; border: 1px solid ${checkColorFont()};">
+    selTypString += `<div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()}; border: ${checkColorFont(true)};">
     <h2 class="calcFont">Current Coverage</h2>
 </div>`;
 
@@ -66199,7 +66212,7 @@ const loadSelectedTypes = () => {
         }
         
     } else if (!typeLearning) {
-    selTypString += `<div class="learningMoveCard" onClick = "learningMove()" style = "border: 1px solid ${checkColorFont()};">
+    selTypString += `<div class="learningMoveCard" onClick = "learningMove()" style = "border: ${checkColorFont(true)};">
     <h2 class="learningMoveFont">Learning Move: \n (Click to select)</h2>
 </div>`;
     } else {
@@ -66208,18 +66221,46 @@ const loadSelectedTypes = () => {
 </div>`;
     }
 
-    selTypString += `<div class="checkOptionsCard" onClick = "checkCombos()" style = "background: ${displayCheckOptionsColor()}; border: 1px solid ${checkColorFont()};">
+    selTypString += `<div class="checkOptionsCard" onClick = "checkCombos()" style = "background: ${displayCheckOptionsColor()}; border: ${checkColorFont(true)};">
     <h2 class="checkOptionsFont">Check Options</h2>
 </div>`;
 
-selTypString += `<div class="unownQCard" style = "border: 1px solid ${checkColorFont()};">
+selTypString += `<div class="unownQCard" onClick = "explainCalc()" style = "border: ${checkColorFont(false)};">
 <img class = "card-image" style = "scale: 2; position: relative; top: 10px;" src="${unownQimage}"/>
 </div>`;
 
     selectedtypes.innerHTML = selTypString;
 };
 
+const explainCalc = () => {
+
+    results.innerHTML = ``;
+
+    faqModeOn = !faqModeOn;
+
+    tempString = ``;
+
+    tempString += `<div class = explainCard><h2 class = explainCardFont>Click any of the buttons highlighted in blue to learn more about their functions. <br>
+    <br>
+    To return to normal calculator functions, click this button again. 
+    </h2></div>`;
+
+    numresults.innerHTML = tempString;
+
+    reloadCalc();
+}
+
 const evoButton = () => {
+
+    if(faqModeOn){
+        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>When toggled off, every single Pokémon will be counted in the calculator. <br>
+        <br>
+        When toggled on, only fully evolved Pokémon will be counted. <br>
+        <br>
+        Note that the default Kaizo and Survival rules have enemy Pokémon fully evolved after Level 30, so this should be toggled on once you reach that point.</h2></div>`;
+        return;
+    }
+
     fullEvolvedOnly = !fullEvolvedOnly;
     loadSelectedTypes();
     reloadCalc();
@@ -66237,12 +66278,39 @@ const displayCheckOptionsColor = () => {
 }
 
 const toggleBSTMode = () => {
+
+    if(faqModeOn){
+        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>Weights mons by BST, instead of only counting the number of mons. <br>
+        <br>
+        For example, normally Spinda and Arceus would both count for one Pokémon in the coverage calculator. 
+        However, in BST-Weighted Mode, since Arceus has twice Spinda's BST, it will be weighted twice as much. <br>
+        <br>
+        The formula depends on the generation and whether or not fully evolved is toggled on. In Plat/HGSS, the average fully evolved
+        BST is 496.53. This means that Spinda would count as 360/496.53 = .73, whereas Arceus would count as 720/496.53 = 1.45.
+
+        </h2></div>`;
+        return;
+    }
+
     bstWeightedOn = !bstWeightedOn;
     loadSelectedTypes();
     reloadCalc();
 }
 
 const learningMove = () => {
+
+    if(faqModeOn){
+        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>When highlighted red, you may select a type. <br>
+        <br>
+        Once a type is selected, the "Check Options" button can be used to see the coverage of all possible movesets formed with this new move.
+        For more details, click on the "Check Options" button. <br>
+        <br>
+        To stop selecting a move, click this button again. This will preserve the current move you have selected. To deselect a learned move, click the appropriate
+        type in the main type selection area.
+        
+        </h2></div>`;
+        return;
+    }
 
     if(typeLearning && !isLearningMove){
         typeLearning = false;
@@ -66256,6 +66324,17 @@ const learningMove = () => {
 }
 
 const checkCombos = () => {
+
+    if(faqModeOn){
+        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>If a learned move is selected, calculates the coverage of all possible choices. <br>
+        <br>
+        For example, if your current moveset is Fire/Water/Grass/Electric, and you are learning an Ice-type move, your current coverage along with
+        the coverage of all four possible new movesets will be shown. If any moves are locked, that option will not be shown.
+        <br><br>
+        Each of the numbers can be clicked to see the specific Pokémon. The options on the left can be clicked once the decision of which move to drop is made.
+        </h2></div>`;
+        return;
+    }
 
     if(!typeLearning){
         return;
@@ -66465,11 +66544,19 @@ const showCombos = (row) => {
 
     for(i = 0; i < 6; i++){
         if(displayingCombosArray[row][i]){
-        tempString += `<br></br>` + `<h2  style="color: ${checkColorFont()}";>${insertText(i)}</h2>` + `${showMons(comboArrays[row][i])}` ;
+        tempString += `<br></br>` + `<h2  style="color: ${checkColorFontBW()}";>${insertText(i)}</h2>` + `${showMons(comboArrays[row][i])}` ;
         }
     }
     
     return tempString;
+}
+
+const checkColorFontBW = () => {
+    if(lightModeOn){
+        return "#000000";
+    } else {
+        return '#FFFFFF';
+    }
 }
 
 const updateMoveset = (num) => {
@@ -66496,12 +66583,12 @@ const updateMoveset = (num) => {
 const loadOneType = (i) => {
 
     if(selectedTypes[i] == 0){
-        oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})">
+        oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style = "border: ${checkColorFont(true)}";>
             <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} N/A</h2>
             <img class = "card-image" style = "scale: .6; position: relative; top: -60px; left: 60px; opacity: ${movesLockedOpacity(i)};" src="${pokemonCacheRO[706].image}"/>
     </div>`
     }else{
-    oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style="background-color: ${colors[selectedTypes[i]-1]};">
+    oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style="background-color: ${colors[selectedTypes[i]-1]}; border: ${checkColorFont(true)};">
             <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} ${typeCache[selectedTypes[i]-1].name}</h2>
             <img class = "card-image" style = "scale: .6; position: relative; top: -60px; left: 60px; opacity: ${movesLockedOpacity(i)};" src="${pokemonCacheRO[706].image}"/>
     </div>`
@@ -66548,11 +66635,36 @@ const movesLockedOpacity = (i) => {
 }
 
 const lockMove = (i) => {
+
+    if(faqModeOn){
+        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>Displays current move types. <br>
+        <br>
+        Clicking on the Klefki allows you to "lock" the moves, which means that the "Check Options" button will not show options that result in dropping these moves. <br>
+        <br>
+        For example, if you have Earthquake on a Ground type physical attacker, you would never consider dropping it. This allows you to ignore that option when learning a new move. <br>
+        <br>
+        Note that if you have a status move you do not wish to drop, you may also lock the empty "N/A" moveslots.
+        
+        
+        </h2></div>`;
+        return;
+    }
+
     movesLocked[i] = !movesLocked[i];
     reloadCalc();
 }
 
 const overrideCalc = () => {
+
+    if(faqModeOn){
+        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>Calculates coverage based on current moves.<br>
+        <br>
+        The results are displayed horizontally in numerical form along with a vertical layout that can be clicked on to show the specific Pokémon that are
+        at each level of coverage.
+        </h2></div>`;
+        return;
+    }
+
     checkingOptions = false;
     isLearningMove = false;
     loadSelectedTypes();
@@ -66698,12 +66810,21 @@ const runCalc = () => {
 }
 
 const returnNum = (mon) => {
+
+    numToUse = 1;
+
+    if(fullEvolvedOnly){
+        numToUse = avgBSTArrayFE[activeGen];
+    } else {
+        numToUse = avgBSTArray[activeGen];
+    }
+
     if(bstWeightedOn){
         tempBST = 0;
         for(let i = 0; i < 6; i++){
             tempBST += mon.basestats[i].base_stat;
         }
-        return (tempBST/500);
+        return (tempBST/numToUse);
     } else {
         return 1;
     }

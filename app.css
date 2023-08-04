@@ -405,6 +405,32 @@ h1 {
     margin-top: 0px;
 }
 
+.explainCard{
+    padding: 10px;
+    background-color: rgb(201, 152, 88);
+    color: #222;
+    height: 300px;
+    width: 1000px;
+    border-radius: 12px;
+    margin: auto;
+    position: relative;
+    top: 20px;
+}
+
+.explainCardFont{
+    font-size: 24px;
+    color: white;
+    text-shadow:
+    0.08em 0 black,
+    0 0.08em black,
+    -0.08em 0 black,
+    0 -0.08em black,
+    -0.08em -0.08em black,
+    -0.08em 0.08em black,
+    0.08em -0.08em black,
+    0.08em 0.08em black;
+}
+
 *{
     text-align:center;
     justify-content: center;
