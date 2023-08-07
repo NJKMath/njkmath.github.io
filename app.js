@@ -95,27 +95,27 @@ const loadMode = () => {
 
     tempString = ``;
 
-    tempString += `<div class = "modeCard" onClick = "changeMode(${true})" style="${checkMode(0)}; scale: .8; position:absolute; left:20px; top:20px;">
+    tempString += `<div class = "modeCard" onClick = "changeMode(${true})" style="${checkMode(0)}; scale: .8; position:absolute; left:.25vw; top:2.2vh;">
     <img class = "card-image" src="${pokemonCacheRO[337].image}"/>
     <h2 class = "modeFont" style = "color: white";>Light Mode</h2>
    </div>`;
 
-   tempString += `<div class = "modeCard" onClick = "changeMode(${false})" style="${checkMode(1)}; scale: .8;position:absolute; left:100px; top:20px;">
+   tempString += `<div class = "modeCard" onClick = "changeMode(${false})" style="${checkMode(1)}; scale: .8;position:absolute; left:5.5vw; top:2.2vh;">
    <img class = "card-image" src="${pokemonCacheRO[336].image}"/>
    <h2 class = "modeFont">Dark Mode</h2>
   </div><br></br>`;
 
-    tempString += `<div class="evoButtonCard" style = "position:absolute; left:250px; top:80px; border: ${checkColorFont(true)};"onClick = "evoButton()">
+    tempString += `<div class="evoButtonCard" style = "position:absolute; left:12vw; top:8.8vh; border: ${checkColorFont(true)};"onClick = "evoButton()">
     <h2 class="evoButtonFont">Fully Evolved Only ${returnFullEvoText()}</h2>
     <img class = "card-image" style = "scale: .8; position: relative; top: -122px;" src="${returnEeveeImage()}"/>
 </div>`;
 
-    tempString += `<div class="evoButtonCard" style = "position:absolute; left:450px; top:80px; border: ${checkColorFont(true)};" onClick = "toggleBSTMode()">
+    tempString += `<div class="evoButtonCard" style = "position:absolute; left:22vw; top:8.8vh; border: ${checkColorFont(true)};" onClick = "toggleBSTMode()">
     <h2 class="evoButtonFont">BST-Weighted ${returnBSTWeightText()}</h2>
 </div>`;
 
 
-  tempString += `<h1 style = "position:absolute; top:40px; color: ${checkColorFontBW(false)};">Ironmon Coverage Calc</h1>`;
+  tempString += `<h1 style = "position:absolute; top:4.5vh; color: ${checkColorFontBW(false)};">Ironmon Coverage Calc</h1>`;
 
    brightmode.innerHTML = tempString;
 }

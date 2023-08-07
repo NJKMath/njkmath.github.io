@@ -8,22 +8,22 @@ body {
     padding: 10px;
     color: #ffffff;
     border-radius: 12px;
-    height: 45px;
-    width: 140px;
+    height: 60%;
+    width: 90%;
 }
 
 .typeSelCard.active{
     padding: 5px;
     border: 5px solid black;
-    height: 45px;
-    width: 140px;
+    height: 60%;
+    width: 90%;
 }
 
 .typeSelCard.learning{
     padding: 5px;
     border: 5px solid red;
-    height: 45px;
-    width: 140px;
+    height: 60%;
+    width: 90%;
 }
 
 .selectedTypeCard{
@@ -31,10 +31,10 @@ body {
     padding: 1px;
     background-color: rgb(201, 152, 88);
     height: 60px;
-    width: 150px;
+    width: 9vw;
     border-radius: 12px;
     overflow: clip;
-    overflow-clip-margin: 35px;
+    overflow-clip-margin: 45px;
 }
 
 .evoButtonCard{
@@ -42,13 +42,13 @@ body {
     padding: 10px;
     background-color: rgb(201, 152, 88);
     color: #222;
-    height: 30px;
-    width: 125px;
+    height: 32px;
+    width: 6.4vw;
     border-radius: 12px;
 }
 
 .evoButtonFont{
-    font-size: 16px;
+    font-size: .85vw;
     font-weight: heavy;
     margin-top: -2px;
     color: white;
@@ -463,5 +463,4 @@ h1 {
     text-align:center;
     justify-content: center;
     align-items: center;
-    width: 100%;
 }
