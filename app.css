@@ -188,7 +188,7 @@ body {
 }
 
 .sketchFont{
-    margin-right: -35px;
+    margin-left: 18px;
     font-size: 20px;
     margin-top: 7px;
     color: white;
@@ -463,4 +463,5 @@ h1 {
     text-align:center;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
