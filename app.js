@@ -95,22 +95,22 @@ const loadMode = () => {
 
     tempString = ``;
 
-    tempString += `<div class = "modeCard" onClick = "changeMode(${true})" style="${checkMode(0)}; scale: .8; position:absolute; left:.25vw; top:2.2vh;">
+    tempString += `<div class = "modeCard" onClick = "changeMode(${true})" style="${checkMode(0)}; position:absolute; left:1vw; top:2.2vh;">
     <img class = "card-image" src="${pokemonCacheRO[337].image}"/>
     <h2 class = "modeFont" style = "color: white";>Light Mode</h2>
    </div>`;
 
-   tempString += `<div class = "modeCard" onClick = "changeMode(${false})" style="${checkMode(1)}; scale: .8;position:absolute; left:5.5vw; top:2.2vh;">
+   tempString += `<div class = "modeCard" onClick = "changeMode(${false})" style="${checkMode(1)}; position:absolute; left:6.5vw; top:2.2vh;">
    <img class = "card-image" src="${pokemonCacheRO[336].image}"/>
    <h2 class = "modeFont">Dark Mode</h2>
   </div><br></br>`;
 
-    tempString += `<div class="evoButtonCard" style = "position:absolute; left:12vw; top:8.8vh; border: ${checkColorFont(true)};"onClick = "evoButton()">
+    tempString += `<div class="evoButtonCard" style = "right: 30vw; border: ${checkColorFont(true)};"onClick = "evoButton()">
     <h2 class="evoButtonFont">Fully Evolved Only ${returnFullEvoText()}</h2>
-    <img class = "card-image" style = "scale: .8; position: relative; top: -122px;" src="${returnEeveeImage()}"/>
+    <img class = "card-image" style = "scale: .8; position: relative; top: -16vh;" src="${returnEeveeImage()}"/>
 </div>`;
 
-    tempString += `<div class="evoButtonCard" style = "position:absolute; left:22vw; top:8.8vh; border: ${checkColorFont(true)};" onClick = "toggleBSTMode()">
+    tempString += `<div class="evoButtonCard" style = "right: 25vw; border: ${checkColorFont(true)};" onClick = "toggleBSTMode()">
     <h2 class="evoButtonFont">BST-Weighted ${returnBSTWeightText()}</h2>
 </div>`;
 
@@ -66192,7 +66192,7 @@ const loadSelectedTypes = () => {
     }
 
     selTypString += `<div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()}; border: ${checkColorFont(true)};">
-    <h2 class="calcFont">Current Coverage</h2>
+    <h2 class="calcFont">Calculate Coverage</h2>
 </div>`;
 
     if(isLearningMove){
@@ -66220,9 +66220,9 @@ const loadSelectedTypes = () => {
     <h2 class="checkOptionsFont">Check Options</h2>
 </div>`;
 
-selTypString += `<div class="sketchCard" onClick = "sketchPrioCalc()" style = "background: ${displayCheckOptionsColor()}; border: ${checkColorFont(true)};">
+selTypString += `<div class="sketchCard" onClick = "sketchPrioCalc()" style = "border: ${checkColorFont(true)};">
 <h2 class="sketchFont">Sketch Priority</h2>
-<img class = "card-image" style = "scale: .8; position: relative; top: -90px; right: 70px;" src="${pokemonCacheRO[234].image}"/>
+<img class = "topImage" src="${pokemonCacheRO[234].image}"/>
 </div>`;
 
 selTypString += `<div class="unownQCard" onClick = "explainCalc()" style = "border: ${checkColorFont(false)};">
@@ -66623,12 +66623,12 @@ const loadOneType = (i) => {
     if(selectedTypes[i] == 0){
         oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style = "border: ${checkColorFont(true)}";>
             <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} N/A</h2>
-            <img class = "card-image" style = "scale: .6; position: relative; top: -60px; left: 60px; opacity: ${movesLockedOpacity(i)};" src="${pokemonCacheRO[706].image}"/>
+            <img class = "klefkiImage" style = "scale: .6; opacity: ${movesLockedOpacity(i)};" src="${pokemonCache[706].image}"/>
     </div>`
     }else{
     oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style="background-color: ${colors[selectedTypes[i]-1]}; border: ${checkColorFont(true)};">
             <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} ${typeCache[selectedTypes[i]-1].name}</h2>
-            <img class = "card-image" style = "scale: .6; position: relative; top: -60px; left: 60px; opacity: ${movesLockedOpacity(i)};" src="${pokemonCacheRO[706].image}"/>
+            <img class = "klefkiImage" style = "scale: .6; opacity: ${movesLockedOpacity(i)};" src="${pokemonCache[706].image}"/>
     </div>`
     }
 
@@ -66657,7 +66657,7 @@ const displayIfLocked = (i) => {
 
 const checkMarginLocked = (i) => {
     if(movesLocked[i]){
-        return `margin-top: 15px;`;
+        return `margin-top: 10px;`;
     } else {
         return;
     }
