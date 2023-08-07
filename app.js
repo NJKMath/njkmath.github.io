@@ -44,6 +44,8 @@ displayingMons = [false, false, false, false, false, false];
 
 displayingCombosArray = [];
 
+tempArray1 = [];
+
 isLearningMove = false;
 
 typeLearning = null;
@@ -220,6 +222,14 @@ const checkColorFont = (yellow) => {
         return "1px solid #000000;";
     } else {
         return "1px solid #FFFFFF;";
+    }
+}
+
+const checkColorTypeSel = () => {
+    if(lightModeOn){
+        return "black";
+    } else {
+        return "white";
     }
 }
 
@@ -65892,18 +65902,6 @@ const typeToID = (type) => {
     }
 }
 
-const displayPokemon = (pokemon) => {
-    
-    const pokemonHTMLString = pokemon.map (mon => `
-    <li class = "card">
-     <img class = "card=image" src="${mon.image}"/>
-     <h2 class = "card-title">${mon.id}. ${mon.name}</h2>
-     <p class = "card-subtitle">Type: ${mon.type}</p>
-    </li>
-    `).join('');
-    pokecalc.innerHTML = pokecalc.innerHTML + pokemonHTMLString;
-};
-
 const loadCalc = () => {
     const promises = [];
     
@@ -65984,10 +65982,7 @@ const reloadCalc = () => {
         return;
     }
 
-    if(!faqModeOn){
-    numresults.innerHTML = "";
-    results.innerHTML = "";
-    }
+    
 }
 
 const adjustPokemon = (pokemon) => {
@@ -66126,7 +66121,7 @@ const displayTypes = () => {
      <h2 class = "selTypeFont">${typeCacheRO[i].name}</h2>
     </li>`;
     } else {
-        typeHTMLString += `<li class ="typeSelCard active" onclick = "cacheType(${typeCacheRO[i].id})" style = "background-color: ${colors[typeCacheRO[i].id-1]}; border: ${checkColorFont(false)};">
+        typeHTMLString += `<li class ="typeSelCard active" onclick = "cacheType(${typeCacheRO[i].id})" style = "background-color: ${colors[typeCacheRO[i].id-1]}; border: 5px solid ${checkColorTypeSel()};">
      <h2 class = "selTypeFont">${typeCacheRO[i].name}</h2>
     </li>`;
     }
@@ -66225,6 +66220,11 @@ const loadSelectedTypes = () => {
     <h2 class="checkOptionsFont">Check Options</h2>
 </div>`;
 
+selTypString += `<div class="sketchCard" onClick = "sketchPrioCalc()" style = "background: ${displayCheckOptionsColor()}; border: ${checkColorFont(true)};">
+<h2 class="sketchFont">Sketch Priority</h2>
+<img class = "card-image" style = "scale: .8; position: relative; top: -90px; right: 70px;" src="${pokemonCacheRO[234].image}"/>
+</div>`;
+
 selTypString += `<div class="unownQCard" onClick = "explainCalc()" style = "border: ${checkColorFont(false)};">
 <img class = "card-image" style = "scale: 2; position: relative; top: 10px;" src="${unownQimage}"/>
 </div>`;
@@ -66232,28 +66232,62 @@ selTypString += `<div class="unownQCard" onClick = "explainCalc()" style = "bord
     selectedtypes.innerHTML = selTypString;
 };
 
+const sketchPrioCalc = () => {
+
+    if(faqModeOn){
+        results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>
+        Will calculate the top 5 types to add to your moveset with Sketch, along with which type they should replace.
+
+        <br><br>
+
+        This feature is not currently available, but will be coming soon!
+        
+        </h2></div>`;
+        return;
+    }
+
+    results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>
+        Will calculate the top 5 types to add to your moveset with Sketch, along with which type they should replace.
+
+        <br><br>
+
+        This feature is not currently available, but will be coming soon!
+        
+        </h2></div>`;
+        return;
+}
+
 const explainCalc = () => {
 
     results.innerHTML = ``;
 
     faqModeOn = !faqModeOn;
 
+    reloadCalc();
+
+    if(!faqModeOn){
+        runCalc();
+        return;
+    }
+
     tempString = ``;
 
     tempString += `<div class = explainCard><h2 class = explainCardFont>Click any of the buttons highlighted in blue to learn more about their functions. <br>
     <br>
     To return to normal calculator functions, click this button again. 
+    <br><br>
+    If any explanations are unclear, or for any other comments, complaints, or suggestions, contact King Jebus (kingjebus) on Discord, or 
+    KingJebusTheWise on Twitch.
     </h2></div>`;
 
-    numresults.innerHTML = tempString;
-
-    reloadCalc();
+    results.innerHTML = tempString;
+    
 }
 
 const evoButton = () => {
 
     if(faqModeOn){
-        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>When toggled off, every single Pokémon will be counted in the calculator. <br>
+        results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>When toggled off, every single Pokémon will be counted in the calculator. <br>
         <br>
         When toggled on, only fully evolved Pokémon will be counted. <br>
         <br>
@@ -66280,7 +66314,7 @@ const displayCheckOptionsColor = () => {
 const toggleBSTMode = () => {
 
     if(faqModeOn){
-        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>Weights mons by BST, instead of only counting the number of mons. <br>
+        results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>Weights mons by BST, instead of only counting the number of mons. <br>
         <br>
         For example, normally Spinda and Arceus would both count for one Pokémon in the coverage calculator. 
         However, in BST-Weighted Mode, since Arceus has twice Spinda's BST, it will be weighted twice as much. <br>
@@ -66300,7 +66334,7 @@ const toggleBSTMode = () => {
 const learningMove = () => {
 
     if(faqModeOn){
-        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>When highlighted red, you may select a type. <br>
+        results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>When highlighted red, you may select a type. <br>
         <br>
         Once a type is selected, the "Check Options" button can be used to see the coverage of all possible movesets formed with this new move.
         For more details, click on the "Check Options" button. <br>
@@ -66326,7 +66360,7 @@ const learningMove = () => {
 const checkCombos = () => {
 
     if(faqModeOn){
-        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>If a learned move is selected, calculates the coverage of all possible choices. <br>
+        results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>If a learned move is selected, calculates the coverage of all possible choices. <br>
         <br>
         For example, if your current moveset is Fire/Water/Grass/Electric, and you are learning an Ice-type move, your current coverage along with
         the coverage of all four possible new movesets will be shown. If any moves are locked, that option will not be shown.
@@ -66429,13 +66463,9 @@ const loadCombos = () => {
         }
     });
 
-    console.log(selectedTypes);
-
     activeState = 2;
 
-    numresults.innerHTML = "";
-
-    numresultsHTMLString = "";
+    results.innerHTML = "";
 
     for(let i = 0; i < comboArrays.length; i++){
         tempStringArray[i] = [];
@@ -66459,7 +66489,7 @@ const loadCombos = () => {
         tempStringArray[i][7] = `<div id="wrapper><div class="numResultsBlankCard"><h2>${showCombos(i)}</h2></div></div>`;
 
     if(i < (comboArrays.length - 1 - tempMod)){
-    tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${selectedTypes[i]})" style="background-color: ${colors[typeCache[selectedTypes[i]-1].id-1]}; border: 1px solid black;">
+    tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${selectedTypes[i]})" style="background-color: ${colors[typeCache[selectedTypes[i]-1].id-1]}; border: ${checkColorFont(false)};">
     <h2 class="resultsFont">Drop ${(typeCache[selectedTypes[i]-1].name).toUpperCase()}:` + `&emsp;&emsp;`;
     
     tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup((typeCache[selectedTypes[i]-1].id-1), i, j-1)};">
@@ -66468,7 +66498,7 @@ const loadCombos = () => {
     } 
     
     if(i == (comboArrays.length - 2) && tempMod != 0){
-        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${0})" style="background-color: ${colors[typeCache[typeLearning-1].id-1]}; border: 1px solid black;">
+        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${0})" style="background-color: ${colors[typeCache[typeLearning-1].id-1]}; border: ${checkColorFont(false)};">
         <h2 class="resultsFont">Add ${(typeCache[typeLearning-1].name).toUpperCase()}:` + `&emsp;&emsp;`;
 
         tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(typeCache[typeLearning-1].id-1, i, j-1)};">
@@ -66478,7 +66508,7 @@ const loadCombos = () => {
     }
 
     if(i == (comboArrays.length-1)){
-        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${-1})" style = "border: 1px solid black;">
+        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${-1})" style = "border: ${checkColorFont(false)};">
         <h2 class="resultsFont">Current Moves:` + `&emsp;&emsp;`;
 
         tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(-1, i, j-1)};">
@@ -66508,13 +66538,21 @@ const loadCombos = () => {
     });
     
     for(let i = 0; i < comboArrays.length; i++){
-        numresults.innerHTML += tempStringArray[i].join(` `) + `\n`;
+        results.innerHTML += tempStringArray[i].join(` `) + `\n`;
     }
 
     selectedTypes = [...storeSelTypes];
 }
 
 const styleCleanup = (num, i, j) => {
+
+    if(num == -2){
+        if(tempArray1[i] == 0){
+            return `${checkColorCombos()}`;
+        } else {
+            return `#8F867B`;
+        }
+    }
 
     if(num == -1){
         if(tempBSTArrays[i][j] == 0){
@@ -66637,7 +66675,7 @@ const movesLockedOpacity = (i) => {
 const lockMove = (i) => {
 
     if(faqModeOn){
-        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>Displays current move types. <br>
+        results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>Displays current move types. <br>
         <br>
         Clicking on the Klefki allows you to "lock" the moves, which means that the "Check Options" button will not show options that result in dropping these moves. <br>
         <br>
@@ -66657,10 +66695,12 @@ const lockMove = (i) => {
 const overrideCalc = () => {
 
     if(faqModeOn){
-        numresults.innerHTML = `<div class = explainCard><h2 class = explainCardFont>Calculates coverage based on current moves.<br>
+        results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>Calculates coverage based on current move types, generation, and
+        evolution setting.<br>
         <br>
-        The results are displayed horizontally in numerical form along with a vertical layout that can be clicked on to show the specific Pokémon that are
-        at each level of coverage.
+        The results are displayed horizontally in numerical form. Each box can be clicked on to show the specific Pokémon that are
+        at each level of coverage. <br><br>
+        Pokémon are displayed in order of BST (Base Stat Total), from highest to lowest.
         </h2></div>`;
         return;
     }
@@ -66678,8 +66718,6 @@ const runCalc = () => {
     }
 
     results.innerHTML = "";
-
-    numresults.innerHTML = "";
 
     num0 = 0;
 
@@ -66790,22 +66828,7 @@ const runCalc = () => {
 
     activeState = 1;
 
-    results.innerHTML = displayResults(tempArray);
-
-    numresultsHTMLString = `<div class="numResultsCard">
-    <h2 class="numResultsFont">`;
-
-    for(let i = 0; i < 6; i++){
-        if(bstWeightedOn){
-        numresultsHTMLString += `${insertText(i)}${tempArray1[i].toFixed(2)}` + `&emsp;&emsp;`;
-        } else {
-        numresultsHTMLString += `${insertText(i)}${tempArray1[i]}` + `&emsp;&emsp;`;    
-        }
-    }
-
-    numresultsHTMLString += `</h2></div>`;
-    
-    numresults.innerHTML = numresultsHTMLString;
+    displayResults(tempArray1);
 
 }
 
@@ -66819,15 +66842,26 @@ const returnNum = (mon) => {
         numToUse = avgBSTArray[activeGen];
     }
 
+    tempBST = 0;
+
     if(bstWeightedOn){
-        tempBST = 0;
-        for(let i = 0; i < 6; i++){
-            tempBST += mon.basestats[i].base_stat;
-        }
+        tempBST = calcBST(mon);
+        
         return (tempBST/numToUse);
     } else {
         return 1;
     }
+}
+
+const calcBST = (mon) => {
+
+    tempVar = 0;
+
+    for(let i = 0; i < 6; i++){
+        tempVar += mon.basestats[i].base_stat;
+    }
+
+    return tempVar;
 }
 
 const displayCalcColor = () => {
@@ -66859,36 +66893,49 @@ const displayCalcColor = () => {
 
 const displayResults = (array) => {
 
-    resultsHTMLString = "";
-
-    for(let i = 0; i < 6; i++){
-        resultsHTMLString += `<li class="resultsCard" onclick = "displayMons(${i})">
-        <h2 class="numResultsFont">${insertText(i)}${array[i].length}</h2>
-    </li>\n&ensp;`;
-    }
-
-    return resultsHTMLString;
-
-}
-
-const displayMons = (num) => {
-
-    console.log(tempArray);
-
-    tempString = "";
-
-    displayingMons[num] = !displayingMons[num];
-
-    for(let i = 0; i < 6; i++){
-        tempString += `<li class="resultsCard" onclick = "displayMons(${i})">
-        <h2 class="numResultsFont">${insertText(i)}${tempArray[i].length}</h2>
-    </li>\n\n\n&ensp;`
-        if(displayingMons[i]){
-            tempString += `${showMons(tempArray[i])}`;
+    if(bstWeightedOn){
+        for(let i = 0; i < 6; i++){
+        array[i] = Number(array[i]).toFixed(2);
         }
     }
 
-    results.innerHTML = tempString;
+    console.log(array);
+
+    resultsHTMLString = "";
+
+    resultsHTMLString += `<div class="comboResultsCard">
+    <h2 class="resultsFont">Coverage:&emsp;&emsp;</h2></div>\n&ensp;`;
+
+    for(let i = 0; i < 6; i++){
+        resultsHTMLString += `<li class="comboResultsCard" onclick = "toggleDisplay(${i})" style = "background-color: ${styleCleanup(-2, i, 0)};">
+        <h2 class="resultsFont">${insertText(i)}${array[i]}&emsp;&emsp;</h2>
+    </li>\n&ensp;`;
+    }
+
+    resultsHTMLString += `<div id="wrapper><div class="numResultsBlankCard"><h2>${displayMons()}</h2></div></div>`;
+    
+    results.innerHTML = resultsHTMLString;
+
+}
+
+const toggleDisplay = (num) => {
+
+    displayingMons[num] = !displayingMons[num];
+
+    displayResults(tempArray1);
+}
+
+const displayMons = () => {
+
+    tempString = ``;
+
+    for(i = 0; i < 6; i++){
+        if(displayingMons[i]){
+        tempString += `<br></br>` + `<h2  style="color: ${checkColorFontBW()}";>${insertText(i)}</h2>` + `${showMons(tempArray[i])}`;
+        }
+    }
+    
+    return tempString;
 
 }
 
@@ -66896,14 +66943,20 @@ const showMons = (array) => {
 
     stringHTML = "";
 
-      for(let i = 0; i < array.length; i++){
+    tempMonArray = [...array];
+
+    tempMonArray.sort(function(a,b){
+        return (calcBST(b) - calcBST(a));
+    });
+
+    for(let i = 0; i < tempMonArray.length; i++){
         stringHTML += `<div class = "displayMonsCard">
-        <img class = "card-image" src="${array[i].image}"/>
+        <img class = "card-image" src="${tempMonArray[i].image}"/>
        </div>
        `
-      }
+    }
 
-      return stringHTML;
+    return stringHTML;
     
 }
 
