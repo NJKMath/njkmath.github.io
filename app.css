@@ -290,9 +290,8 @@ body {
     background-color: azure;
     height: calc(10px + 8vh);
     width: calc(5vw);
-    border-radius: 12px;
-    position: relative;
-    display: inline-block;
+    position: absolute;
+    padding: 10px;
 }
 
 #wrapper{
@@ -408,6 +407,12 @@ body {
 .evoBSTContainer{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    position: relative;
+}
+
+.unownQContainer{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     position: relative;
 }
 

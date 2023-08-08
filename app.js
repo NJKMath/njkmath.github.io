@@ -118,17 +118,17 @@ const loadMode = () => {
 
   tempString += `<h1 style = "top:60px;"><img class = "card-image" style = "scale: 1.3;" src="${calcLogo}"/></h1>`;
 
-  tempString += `<div class="unownQCard" onClick = "explainCalc()" style = "left: 675px; background-color: ${checkColorCombos()};">
+  tempString += `<div class = "unownQContainer"><div class="unownQCard" onClick = "explainCalc()" style = "background-color: ${checkColorCombos()};">
   <img class = "card-image" style = "scale: 1.5;" src="${unownQimage}"/>
   </div>`;
 
-  tempString += `<div class="unownQCard" onClick = "explainCalc()" style = "left: 600px; background-color: transparent;">
+  tempString += `<div class="unownQCard" onClick = "explainCalc()" style = "left: 20px; background-color: transparent;">
   <img class = "card-image" style = "scale: 1.5;" src="${unownQimage}"/>
   </div>`;
 
-  tempString += `<div class="unownQCard" onClick = "explainCalc()" style = "left: 525px; background-color: transparent;">
+  tempString += `<div class="unownQCard" onClick = "explainCalc()" style = "left: 40px; background-color: transparent;">
   <img class = "card-image" style = "scale: 1.5;" src="${unownQimage}"/>
-  </div>`;
+  </div></div>`;
   
    brightmode.innerHTML = tempString;
 }
