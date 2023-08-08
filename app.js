@@ -66657,7 +66657,7 @@ const displayIfLocked = (i) => {
 
 const checkMarginLocked = (i) => {
     if(movesLocked[i]){
-        return `margin-top: 10px;`;
+        return `margin-top: 11px;`;
     } else {
         return;
     }

@@ -25,7 +25,7 @@ body {
 .selTypeFont{
     margin-top: calc(4px + .2vh);
     text-transform: uppercase;
-    font-size: calc(2px + .75vw + 1vh);
+    font-size: 20px;
     font-weight: heavy;
     text-shadow:
     0.08em 0 black,
@@ -53,7 +53,7 @@ body {
 
 .movesetFont{
     text-transform: uppercase;
-    font-size: calc(2px + .60vw + .85vh);
+    font-size: 22px;
     font-weight: heavy;
     margin-top: calc(1.5vh);
     color: white;
@@ -81,7 +81,7 @@ body {
 }
 
 .evoButtonFont{
-    font-size: calc(2px + .75vw + .4vh);
+    font-size: 18px;
     font-weight: heavy;
     margin-top: 0px;
     color: white;
@@ -107,7 +107,7 @@ body {
 }
 
 .calcFont{
-    font-size: calc(3px + .35vw + .9vh);
+    font-size: 18px;
     margin-top: calc(-3px + .05vh);
     font-weight: heavy;
     color: white;
@@ -133,7 +133,7 @@ body {
 
 .currentMovesetFont{
     text-transform: uppercase;
-    font-size: calc(1px + .35vw + .9vh);
+    font-size: 18px;
     font-weight: heavy;
     margin-top: .3vh;
     color: white;
@@ -165,7 +165,7 @@ body {
 }
 
 .learningMoveFont{
-    font-size: calc(2px + .45vw + .7vh);
+    font-size: 18px;
     margin-top: .3vh;
     color: white;
     text-shadow:
@@ -191,7 +191,7 @@ body {
 }
 
 .checkOptionsFont{
-    font-size: calc(3px + .45vw + .8vh);
+    font-size: 20px;
     margin-top: calc(1.2vh);
     color: white;
     text-shadow:
@@ -220,7 +220,7 @@ body {
 }
 
 .sketchFont{
-    font-size: calc(2px + .85vw + .1vh);
+    font-size: 18px;
     color: white;
     text-shadow:
     0.08em 0 black,
@@ -256,7 +256,7 @@ body {
 
 .genSelFont{
     text-transform: uppercase;
-    font-size: calc(3px + .5vw + .2vh);
+    font-size: 15px;
     margin-top: .8em;
     font-weight: heavy;
     color: white;
@@ -334,7 +334,7 @@ body {
 .resultsFont{
     margin-top: 1em;
     margin-left: 1em;
-    font-size: calc(3px + .6vw + .25vh);
+    font-size: 18px;
     color: white;
     text-shadow:
     0.08em 0 black,
@@ -436,7 +436,7 @@ h1 {
 
 .modeFont{
     text-transform: uppercase;
-    font-size: calc(0px + .35vw + .47vh);
+    font-size: 12px;
     font-weight: heavy;
     margin-top: -1vh;
 }
