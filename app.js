@@ -116,7 +116,7 @@ const loadMode = () => {
     <h2 class="evoButtonFont">BST-Weighted ${returnBSTWeightText()}</h2>
 </div></div>`;
 
-  tempString += `<h1 style = "top:60px;"><img class = "card-image" style = "scale: 1.3;" src="${calcLogo}"/></h1>`;
+  tempString += `<h1 style = "margin: auto;"><img class = "card-image" style = "scale: 1.3;" src="${calcLogo}"/></h1>`;
 
   tempString += `<div class = "unownQContainer"><div class="unownQCard" onClick = "explainCalc()" style = "background-color: ${checkColorCombos()};">
   <img class = "card-image" style = "scale: 1.5;" src="${unownQimage}"/>
