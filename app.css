@@ -8,8 +8,8 @@ body {
     padding: 5px;
     color: #ffffff;
     border-radius: 12px;
-    height: calc(7px + 3vh);
-    width: calc(8vw);
+    height: 50px;
+    width: 160px;
 }
 
 .typeSelCard.active{
@@ -23,9 +23,9 @@ body {
 }
 
 .selTypeFont{
-    margin-top: calc(4px + .2vh);
+    margin-top: 15px;
     text-transform: uppercase;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: heavy;
     text-shadow:
     0.08em 0 black,
@@ -43,8 +43,8 @@ body {
     list-style: none;
     padding: 1px;
     background-color: rgb(201, 152, 88);
-    height: calc(5px + 5vh);
-    width: calc(8vw);
+    height: 50px;
+    width: 160px;
     border-radius: 12px;
     position: relative;
     overflow: clip;
@@ -78,6 +78,7 @@ body {
     border-radius: 12px;
     position: relative; 
     top: calc(10px + 5vh);
+    scale: .8;
 }
 
 .evoButtonFont{
@@ -98,12 +99,12 @@ body {
 
 .calcCard{
     padding: 10px;
-    background-color: rgb(201, 152, 88);
+    background-color: azure;
     color: #222;
     height: calc(5px + 3vh);
     width: calc(6vw);
     border-radius: 12px;
-    border: 1px solid black;
+    border: 3px solid black;
 }
 
 .calcFont{
@@ -210,17 +211,20 @@ body {
     padding: 10px;
     background-color: rgb(201, 152, 88);
     color: #222;
-    height: calc(5px + 3vh);
-    width: calc(8vw);
+    height: 35px;
+    width: 160px;
     border-radius: 12px;
     border: 1px solid black;
     position: relative;
     right: 20px;
-    
+    overflow: clip;
+    overflow-clip-margin: 15px;
 }
 
 .sketchFont{
-    font-size: 18px;
+    margin-right: -35px;
+    font-size: 20px;
+    margin-top: 7px;
     color: white;
     text-shadow:
     0.08em 0 black,
@@ -237,16 +241,16 @@ body {
     width: 75%;
     scale: .7;
     position: absolute;
-    margin-top: calc(25px - 8vh - 4vw);
-    margin-left: -4vw;
+    margin-top: -100px;
+    margin-left: -140px;
 }
 
 .genSelCard{
     list-style: none;
     padding: 1px;
     background-color: rgb(201, 152, 88);
-    height: calc(5px + 4vh);
-    width: calc(5px + 7vw);
+    height: 40px;
+    width: 150px;
     border-radius: 12px;
 }
 
@@ -367,7 +371,6 @@ body {
     display: grid;
     grid-template-columns: repeat(9, 2fr);
     grid-gap: 10px;
-    scale: .97;
     width: 100%;
 }
 
@@ -421,14 +424,14 @@ h1 {
 #brightmode{
     padding-inline-start: 0;
     display: flex;
-    grid-template-columns: repeat(auto-fit, 80px);
+    width: 100%;
 }
 
 .modeCard{
     background-color: rgb(143, 134, 123);
     color: #222;
-    height: calc(5px + 3vh + 2vw);
-    width: calc(5px + 3vh + 2vw);
+    height: 80px;
+    width: 80px;
     padding: 1px;
     border-radius: 12px;
     scale: 1.2;
@@ -436,7 +439,7 @@ h1 {
 
 .modeFont{
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: heavy;
     margin-top: -1vh;
 }
@@ -472,3 +475,13 @@ h1 {
     justify-content: center;
     align-items: center;
 }
+
+@media screen and (max-width: 1600px) {
+    div{
+        scale: .83;
+    }
+    .modeCard{
+        scale: .83;
+    }
+}
+
