@@ -362,8 +362,8 @@ body {
 
 #selectedtypes{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-    grid-gap: calc(20px + .5vw);
+    grid-template-columns: repeat(9, 1fr);
+    grid-gap: 20px;
     scale: .95;
     width: 100%;
     position: absolute;
@@ -386,6 +386,29 @@ body {
 
 .container{
     padding: 20px;
+}
+
+.comboRowContainer{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-left: 10%;
+    width: 80%;
+}
+
+.modeContainer{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    left: 5%;
+    top: 1%;
+    position: absolute;
+    width: 1%;
+}
+
+.evoBSTContainer{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    position: relative;
 }
 
 h1 {
@@ -421,6 +444,7 @@ h1 {
     padding-inline-start: 0;
     display: flex;
     width: 100%;
+    
 }
 
 .modeCard{
@@ -470,23 +494,5 @@ h1 {
     text-align:center;
     justify-content: center;
     align-items: center;
-}
-
-@media screen and (max-width: 1200px) {
-    div{
-        scale: calc(.83 * .75);
-    }
-    .modeCard{
-        scale: .83;
-    }
-}
-
-@media screen and (min-width: 1201px) and (max-width: 1600px) {
-    div{
-        scale: .83;
-    }
-    .modeCard{
-        scale: .83;
-    }
 }
 

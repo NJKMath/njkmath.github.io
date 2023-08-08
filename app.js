@@ -97,27 +97,26 @@ const loadMode = () => {
 
     tempString = ``;
 
-    tempString += `<div class = "modeCard" onClick = "changeMode(${true})" style="${checkMode(0)}; position:absolute; left:20px; top:20px;">
+    tempString += `<div class = "modeContainer"><div class = "modeCard" onClick = "changeMode(${true})" style="${checkMode(0)};">
     <img class = "card-image" src="${pokemonCacheRO[337].image}"/>
     <h2 class = "modeFont" style = "color: white";>Light Mode</h2>
    </div>`;
 
-   tempString += `<div class = "modeCard" onClick = "changeMode(${false})" style="${checkMode(1)}; position:absolute; left:95px; top:20px;">
+   tempString += `<div class = "modeCard" onClick = "changeMode(${false})" style="${checkMode(1)};">
    <img class = "card-image" src="${pokemonCacheRO[336].image}"/>
    <h2 class = "modeFont">Dark Mode</h2>
-  </div>`;
+  </div></div>`;
 
-    tempString += `<div class="evoButtonCard" style = "right: 500px; border: ${checkColorFont(true)};"onClick = "evoButton()">
+    tempString += `<div class = "evoBSTContainer"><div class="evoButtonCard" style = "border: ${checkColorFont(true)};"onClick = "evoButton()">
     <h2 class="evoButtonFont">Fully Evolved Only ${returnFullEvoText()}</h2>
     <img class = "card-image" style = "scale: .8; position: relative; top: -145px;" src="${returnEeveeImage()}"/>
 </div>`;
 
-    tempString += `<div class="evoButtonCard" style = "right: 500px; border: ${checkColorFont(true)};" onClick = "toggleBSTMode()">
+    tempString += `<div class="evoButtonCard" style = "border: ${checkColorFont(true)};" onClick = "toggleBSTMode()">
     <h2 class="evoButtonFont">BST-Weighted ${returnBSTWeightText()}</h2>
-</div>`;
+</div></div>`;
 
-
-  tempString += `<h1 style = "position:absolute; top:60px;"><img class = "card-image" style = "scale: 1.3;" src="${calcLogo}"/></h1>`;
+  tempString += `<h1 style = "top:60px;"><img class = "card-image" style = "scale: 1.3;" src="${calcLogo}"/></h1>`;
 
   tempString += `<div class="unownQCard" onClick = "explainCalc()" style = "left: 675px; background-color: ${checkColorCombos()};">
   <img class = "card-image" style = "scale: 1.5;" src="${unownQimage}"/>
@@ -65997,7 +65996,6 @@ const reloadCalc = () => {
     }
 
     results.innerHTML = ``;
-
     
 }
 
@@ -66511,37 +66509,39 @@ const loadCombos = () => {
         tempStringArray[i][7] = `<div id="wrapper><div class="numResultsBlankCard"><h2>${showCombos(i)}</h2></div></div>`;
 
     if(i < (comboArrays.length - 1 - tempMod)){
-    tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${selectedTypes[i]})" style="background-color: ${colors[typeCache[selectedTypes[i]-1].id-1]}; border: ${checkColorFont(false)};">
+    tempStringArray[i][0] = `<div class = "comboRowContainer"><li class="comboResultsCard" onClick = "updateMoveset(${selectedTypes[i]})" style="background-color: ${colors[typeCache[selectedTypes[i]-1].id-1]}; border: ${checkColorFont(false)};">
     <h2 class="resultsFont">Drop ${(typeCache[selectedTypes[i]-1].name).toUpperCase()}:` + `&emsp;&emsp;`;
     
-    tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup((typeCache[selectedTypes[i]-1].id-1), i, j-1)};">
+    tempStringArray[i][j] += `<li class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup((typeCache[selectedTypes[i]-1].id-1), i, j-1)};">
     <h2 class="resultsFont">`;
         tempStringArray[i][j] += `${insertText(j-1)}${tempBSTArrays[i][j-1]}` + `&emsp;&emsp;`;
     } 
     
     if(i == (comboArrays.length - 2) && tempMod != 0){
-        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${0})" style="background-color: ${colors[typeCache[typeLearning-1].id-1]}; border: ${checkColorFont(false)};">
+        tempStringArray[i][0] = `<div class = "comboRowContainer"><li class="comboResultsCard" onClick = "updateMoveset(${0})" style="background-color: ${colors[typeCache[typeLearning-1].id-1]}; border: ${checkColorFont(false)};">
         <h2 class="resultsFont">Add ${(typeCache[typeLearning-1].name).toUpperCase()}:` + `&emsp;&emsp;`;
 
-        tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(typeCache[typeLearning-1].id-1, i, j-1)};">
+        tempStringArray[i][j] += `<li class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(typeCache[typeLearning-1].id-1, i, j-1)};">
         <h2 class="resultsFont">`;
             tempStringArray[i][j] += `${insertText(j-1)}${tempBSTArrays[i][j-1]}` + `&emsp;&emsp;`;
     
     }
 
     if(i == (comboArrays.length-1)){
-        tempStringArray[i][0] = `<div class="comboResultsCard" onClick = "updateMoveset(${-1})" style = "border: ${checkColorFont(false)};">
+        tempStringArray[i][0] = `<div class = "comboRowContainer"><li class="comboResultsCard" onClick = "updateMoveset(${-1})" style = "border: ${checkColorFont(false)};">
         <h2 class="resultsFont">Current Moves:` + `&emsp;&emsp;`;
 
-        tempStringArray[i][j] += `<div class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(-1, i, j-1)};">
+        tempStringArray[i][j] += `<li class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(-1, i, j-1)};">
         <h2 class="resultsFont">`;
             tempStringArray[i][j] += `${insertText(j-1)}${tempBSTArrays[i][j-1]}` + `&emsp;&emsp;`;
     }
 
-    tempStringArray[i][j] += `</h2></div>`;
+    tempStringArray[i][j] += `</h2></li>`;
 }  
 
-    tempStringArray[i][0] += `</h2></div>`;
+    tempStringArray[i][0] += `</h2></li>`;
+
+    tempStringArray[i][6] += `</div>`;
 
     }
 
@@ -66936,16 +66936,16 @@ const displayResults = (array) => {
 
     resultsHTMLString = "";
 
-    resultsHTMLString += `<div class="comboResultsCard">
-    <h2 class="resultsFont">Coverage:&emsp;&emsp;</h2></div>\n&ensp;`;
+    resultsHTMLString += `<div class = "comboRowContainer"><li class="comboResultsCard">
+    <h2 class="resultsFont">Coverage:&emsp;&emsp;</h2></li>`;
 
     for(let i = 0; i < 6; i++){
         resultsHTMLString += `<li class="comboResultsCard" onclick = "toggleDisplay(${i})" style = "background-color: ${styleCleanup(-2, i, 0)};">
         <h2 class="resultsFont">${insertText(i)}${array[i]}&emsp;&emsp;</h2>
-    </li>\n&ensp;`;
+    </li>`;
     }
 
-    resultsHTMLString += `<div id="wrapper><div class="numResultsBlankCard"><h2>${displayMons()}</h2></div></div>`;
+    resultsHTMLString += `</div><div id="wrapper><div class="numResultsBlankCard"><h2>${displayMons()}</h2></div></div>`;
     
     results.innerHTML = resultsHTMLString;
 
