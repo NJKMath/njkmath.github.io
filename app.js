@@ -65996,6 +65996,8 @@ const reloadCalc = () => {
         return;
     }
 
+    results.innerHTML = ``;
+
     
 }
 
