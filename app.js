@@ -64,6 +64,8 @@ eeveeCounter = 0;
 
 unownQimage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/201-question.png`;
 
+calcLogo = `https://raw.githubusercontent.com/NJKMath/njkmath.github.io/main/Ironmon-Coverage-Calculator-8-8-2023.png`
+
 faqModeOn = false;
 
 avgBSTArray = [407.64, 407.46, 406.15, 414.75, 417.30, 420.21, 421.78, 430.68, 435.78, 436.70, 438.19];
@@ -100,14 +102,14 @@ const loadMode = () => {
     <h2 class = "modeFont" style = "color: white";>Light Mode</h2>
    </div>`;
 
-   tempString += `<div class = "modeCard" onClick = "changeMode(${false})" style="${checkMode(1)}; position:absolute; left:120px; top:20px;">
+   tempString += `<div class = "modeCard" onClick = "changeMode(${false})" style="${checkMode(1)}; position:absolute; left:95px; top:20px;">
    <img class = "card-image" src="${pokemonCacheRO[336].image}"/>
    <h2 class = "modeFont">Dark Mode</h2>
   </div>`;
 
     tempString += `<div class="evoButtonCard" style = "right: 500px; border: ${checkColorFont(true)};"onClick = "evoButton()">
     <h2 class="evoButtonFont">Fully Evolved Only ${returnFullEvoText()}</h2>
-    <img class = "card-image" style = "scale: .8; position: relative; top: -140px;" src="${returnEeveeImage()}"/>
+    <img class = "card-image" style = "scale: .8; position: relative; top: -145px;" src="${returnEeveeImage()}"/>
 </div>`;
 
     tempString += `<div class="evoButtonCard" style = "right: 500px; border: ${checkColorFont(true)};" onClick = "toggleBSTMode()">
@@ -115,8 +117,20 @@ const loadMode = () => {
 </div>`;
 
 
-  tempString += `<h1 style = "position:absolute; top:60px; color: ${checkColorFontBW(false)};">Ironmon Coverage Calc</h1>`;
+  tempString += `<h1 style = "position:absolute; top:60px;"><img class = "card-image" style = "scale: 1.3;" src="${calcLogo}"/></h1>`;
 
+  tempString += `<div class="unownQCard" onClick = "explainCalc()" style = "left: 675px; background-color: ${checkColorCombos()};">
+  <img class = "card-image" style = "scale: 1.5;" src="${unownQimage}"/>
+  </div>`;
+
+  tempString += `<div class="unownQCard" onClick = "explainCalc()" style = "left: 600px; background-color: transparent;">
+  <img class = "card-image" style = "scale: 1.5;" src="${unownQimage}"/>
+  </div>`;
+
+  tempString += `<div class="unownQCard" onClick = "explainCalc()" style = "left: 525px; background-color: transparent;">
+  <img class = "card-image" style = "scale: 1.5;" src="${unownQimage}"/>
+  </div>`;
+  
    brightmode.innerHTML = tempString;
 }
 
@@ -66225,10 +66239,6 @@ selTypString += `<div class="sketchCard" onClick = "sketchPrioCalc()" style = "b
 <img class = "topImage" src="${pokemonCacheRO[234].image}"/>
 </div>`;
 
-selTypString += `<div class="unownQCard" onClick = "explainCalc()" style = "border: ${checkColorFont(false)};">
-<img class = "card-image" style = "scale: 2; position: relative; top: 10px;" src="${unownQimage}"/>
-</div>`;
-
     selectedtypes.innerHTML = selTypString;
 };
 
@@ -66360,7 +66370,7 @@ const learningMove = () => {
 const checkCombos = () => {
 
     if(faqModeOn){
-        results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>If a learned move is selected, calculates the coverage of all possible choices. <br>
+        results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>If "Learning Move:" has a type selected, calculates the coverage of all possible choices. <br>
         <br>
         For example, if your current moveset is Fire/Water/Grass/Electric, and you are learning an Ice-type move, your current coverage along with
         the coverage of all four possible new movesets will be shown. If any moves are locked, that option will not be shown.
@@ -66371,6 +66381,16 @@ const checkCombos = () => {
     }
 
     if(!typeLearning){
+        return;
+    }
+
+    tempCount = 0;
+    for(let i = 0; i < 4; i++){
+        if(selectedTypes[i] == 0){
+            tempCount += 1;
+        }
+    }
+    if(tempCount == 4){
         return;
     }
 
@@ -66824,6 +66844,16 @@ const runCalc = () => {
 
     if(checkingOptions){
         return [tempArray, tempArray1];
+    }
+
+    tempCount = 0;
+    for(let i = 0; i < 4; i++){
+        if(selectedTypes[i] == 0){
+            tempCount += 1;
+        }
+    }
+    if(tempCount == 4){
+        return;
     }
 
     activeState = 1;

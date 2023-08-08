@@ -38,7 +38,6 @@ body {
     0.08em 0.08em black;
 }
 
-
 .selectedTypeCard{
     list-style: none;
     padding: 1px;
@@ -82,7 +81,7 @@ body {
 }
 
 .evoButtonFont{
-    font-size: 18px;
+    font-size: 19px;
     font-weight: heavy;
     margin-top: 0px;
     color: white;
@@ -108,8 +107,8 @@ body {
 }
 
 .calcFont{
-    font-size: 18px;
-    margin-top: calc(-3px + .05vh);
+    font-size: 20px;
+    margin-top: -7px;
     font-weight: heavy;
     color: white;
     text-shadow:
@@ -134,7 +133,7 @@ body {
 
 .currentMovesetFont{
     text-transform: uppercase;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: heavy;
     margin-top: .3vh;
     color: white;
@@ -288,10 +287,12 @@ body {
 }
 
 .unownQCard{
-    background-color: rgb(201, 152, 88);
+    background-color: azure;
     height: calc(10px + 8vh);
     width: calc(5vw);
     border-radius: 12px;
+    position: relative;
+    display: inline-block;
 }
 
 #wrapper{
@@ -303,7 +304,7 @@ body {
     background-color: rgba(143, 134, 123, .7);
     color: #222;
     height: calc(5px + 6vh);
-    width: calc(10vw);
+    width: 210px;
     padding: 0px;
     display: inline-block;
     border-radius: 12px;
@@ -337,23 +338,8 @@ body {
 
 .resultsFont{
     margin-top: 1em;
-    margin-left: 1em;
-    font-size: 18px;
-    color: white;
-    text-shadow:
-    0.08em 0 black,
-    0 0.08em black,
-    -0.08em 0 black,
-    0 -0.08em black,
-    -0.08em -0.08em black,
-    -0.08em 0.08em black,
-    0.08em -0.08em black,
-    0.08em 0.08em black;
-}
-
-.numResultsFont{
-    margin-top: 10px;;
-    font-size: 19px;
+    margin-left: .5em; 
+    font-size: 20px;
     color: white;
     text-shadow:
     0.08em 0 black,
@@ -404,8 +390,18 @@ body {
 
 h1 {
     text-transform: uppercase;
-    font-size: 48px;
+    font-size: 64px;
     margin-top: 0px;
+    color: #ffcb05;
+    text-shadow:
+    0.03em 0 blue,
+    0 0.03em blue,
+    -0.03em 0 blue,
+    0 -0.03em blue,
+    -0.03em -0.03em blue,
+    -0.03em 0.03em blue,
+    0.03em -0.03em blue,
+    0.03em 0.03em blue;
 }
 
 .card-image{
@@ -434,7 +430,7 @@ h1 {
     width: 80px;
     padding: 1px;
     border-radius: 12px;
-    scale: 1.2;
+    scale: .8;
 }
 
 .modeFont{
@@ -476,7 +472,16 @@ h1 {
     align-items: center;
 }
 
-@media screen and (max-width: 1600px) {
+@media screen and (max-width: 1200px) {
+    div{
+        scale: calc(.83 * .75);
+    }
+    .modeCard{
+        scale: .83;
+    }
+}
+
+@media screen and (min-width: 1201px) and (max-width: 1600px) {
     div{
         scale: .83;
     }
