@@ -68,20 +68,18 @@ body {
 }
 
 .evoButtonCard{
-    list-style: none;
     padding: 5px;
     background-color: rgb(201, 152, 88);
     color: #222;
-    height: calc(10px + 4vh);
-    width: calc(8vw);
+    height: 30px;
+    width: 100px;
     border-radius: 12px;
-    position: relative; 
-    top: calc(10px + 5vh);
-    scale: .8;
+    position: relative;
+    top: 100%; 
 }
 
 .evoButtonFont{
-    font-size: 19px;
+    font-size: 14px;
     font-weight: heavy;
     margin-top: 0px;
     color: white;
@@ -281,7 +279,6 @@ body {
     color: #222;
     padding: 5px;
     border-radius: 12px;
-
     height: calc(5px + 6vh);
     width: calc(10vw);
 }
@@ -390,6 +387,7 @@ body {
 .comboRowContainer{
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
     margin-left: 10%;
     width: 80%;
 }
@@ -398,28 +396,26 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 5px;
-    left: 5%;
-    top: 1%;
+    left: 1%;
     position: absolute;
-    width: 1%;
 }
 
 .evoBSTContainer{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    position: relative;
+    position: absolute;
+    left: 15%;
 }
 
 .unownQContainer{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    position: relative;
+    position: absolute;
     right: 10%;
 }
 
 h1{
-    position: relative;
-    right: 10%;
+    position: absolute;
     text-transform: uppercase;
     font-size: 64px;
     color: #ffcb05;
@@ -451,21 +447,21 @@ h1{
     padding-inline-start: 0;
     display: flex;
     width: 100%;
+    position: flex;
 }
 
 .modeCard{
     background-color: rgb(143, 134, 123);
     color: #222;
-    height: 80px;
-    width: 80px;
+    height: 70px;
+    width: 70px;
     padding: 1px;
     border-radius: 12px;
-    scale: .8;
 }
 
 .modeFont{
     text-transform: uppercase;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: heavy;
     margin-top: -1vh;
 }
@@ -495,6 +491,11 @@ h1{
     0.08em -0.08em black,
     0.08em 0.08em black;
 }
+
+html {
+    min-width: 1200px;
+    position: relative;
+    }
 
 *{
     text-align:center;

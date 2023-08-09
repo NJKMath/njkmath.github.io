@@ -109,14 +109,14 @@ const loadMode = () => {
 
     tempString += `<div class = "evoBSTContainer"><div class="evoButtonCard" style = "border: ${checkColorFont(true)};"onClick = "evoButton()">
     <h2 class="evoButtonFont">Fully Evolved Only ${returnFullEvoText()}</h2>
-    <img class = "card-image" style = "scale: .8; position: relative; top: -145px;" src="${returnEeveeImage()}"/>
+    <img class = "card-image" style = "position: absolute; top: -60px; right: 10px;" src="${returnEeveeImage()}"/>
 </div>`;
 
     tempString += `<div class="evoButtonCard" style = "border: ${checkColorFont(true)};" onClick = "toggleBSTMode()">
     <h2 class="evoButtonFont">BST-Weighted ${returnBSTWeightText()}</h2>
 </div></div>`;
 
-  tempString += `<h1 style = "margin: auto;"><img class = "card-image" style = "scale: 1.3;" src="${calcLogo}"/></h1>`;
+  tempString += `<h1 style = "margin: auto;"><img class = "card-image" src="${calcLogo}"/></h1>`;
 
   tempString += `<div class = "unownQContainer"><div class="unownQCard" onClick = "explainCalc()" style = "background-color: ${checkColorCombos()};">
   <img class = "card-image" style = "scale: 1.5;" src="${unownQimage}"/>
