@@ -66197,15 +66197,13 @@ const loadSelectedTypes = () => {
 
     selTypString = '';
 
-    selTypString += `<div class="currentMovesetCard">
-    <h2 class="currentMovesetFont">Current Moves:</h2>
-</div>`;
+    selTypString += `<div class = "movesetContainer">`
 
     for (let i = 0; i < 4; i++) {
         selTypString += loadOneType(i);
     }
 
-    selTypString += `<div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()}; border: ${checkColorFont(true)};">
+    selTypString += `</div><div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()}; border: ${checkColorFont(true)};">
     <h2 class="calcFont">Calculate Coverage</h2>
 </div>`;
 
@@ -66240,6 +66238,23 @@ selTypString += `<div class="sketchCard" onClick = "sketchPrioCalc()" style = "b
 </div>`;
 
     selectedtypes.innerHTML = selTypString;
+};
+
+const loadOneType = (i) => {
+
+    if(selectedTypes[i] == 0){
+        oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style = "border: ${checkColorFont(true)}";>
+            <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} Move ${i+1}</h2>
+            <img class = "klefkiImage" style = "scale: .6; opacity: ${movesLockedOpacity(i)};" src="${pokemonCache[706].image}"/>
+    </div>`
+    }else{
+    oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style="background-color: ${colors[selectedTypes[i]-1]}; border: ${checkColorFont(true)};">
+            <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} ${typeCache[selectedTypes[i]-1].name}</h2>
+            <img class = "klefkiImage" style = "scale: .6; opacity: ${movesLockedOpacity(i)};" src="${pokemonCache[706].image}"/>
+    </div>`
+    }
+
+    return oneTypeCard;
 };
 
 const sketchPrioCalc = () => {
@@ -66639,23 +66654,6 @@ const updateMoveset = (num) => {
         }
     
 }
-
-const loadOneType = (i) => {
-
-    if(selectedTypes[i] == 0){
-        oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style = "border: ${checkColorFont(true)}";>
-            <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} N/A</h2>
-            <img class = "klefkiImage" style = "scale: .6; opacity: ${movesLockedOpacity(i)};" src="${pokemonCache[706].image}"/>
-    </div>`
-    }else{
-    oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style="background-color: ${colors[selectedTypes[i]-1]}; border: ${checkColorFont(true)};">
-            <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} ${typeCache[selectedTypes[i]-1].name}</h2>
-            <img class = "klefkiImage" style = "scale: .6; opacity: ${movesLockedOpacity(i)};" src="${pokemonCache[706].image}"/>
-    </div>`
-    }
-
-    return oneTypeCard;
-};
 
 const removeSlot = (id) => {
 
