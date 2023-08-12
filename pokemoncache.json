@@ -1,4 +1,4 @@
-pokemonCache = [
+{"pokemonCache":[
         {
             "name": "bulbasaur",
             "id": 1,
@@ -54241,4 +54241,5 @@ pokemonCache = [
                 }
             ]
         }
-    ];
+]
+}
