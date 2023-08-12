@@ -232,10 +232,10 @@ body {
 
 .genSelCard{
     list-style: none;
-    padding: 1px;
+    padding: 2px;
     background-color: rgb(201, 152, 88);
-    height: 35px;
-    width: 120px;
+    height: 30px;
+    width: 130px;
     border-radius: 12px;
 }
 
@@ -246,7 +246,7 @@ body {
 .genSelFont{
     text-transform: uppercase;
     font-size: 13px;
-    margin-top: .8em;
+    margin-top: .6em;
     font-weight: heavy;
     color: white;
     text-shadow:
@@ -359,7 +359,7 @@ body {
     padding-inline-start: 0;
     display: flex;
     grid-template-columns: repeat(11, 1fr);
-    gap: 10px;
+    gap: 5px;
     flex-wrap: wrap;
 }
 
@@ -392,6 +392,7 @@ body {
 .evoBSTContainer{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
     position: absolute;
     left: 15%;
 }
