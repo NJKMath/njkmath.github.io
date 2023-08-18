@@ -54,6 +54,8 @@ activeState = 0;
 
 bstWeightedOn = false;
 
+shedinjaCounted = true;
+
 lightModeOn = true;
 
 movesLocked = [false, false, false, false];
@@ -65,6 +67,8 @@ unownQimage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/
 calcLogo = `https://raw.githubusercontent.com/NJKMath/njkmath.github.io/main/Ironmon-Coverage-Calculator-8-8-2023.png`
 
 faqModeOn = false;
+
+advFeaturesOn = false;
 
 avgBSTArray = [407.64, 407.46, 406.15, 414.75, 417.30, 420.21, 421.78, 430.68, 435.78, 436.70, 438.19];
 
@@ -89,6 +93,7 @@ const colors = [
 	'#6F35FC',
 	'#705746',
 	'#D685AD',
+    'gray'
 ];
 
 const loadMode = () => {
@@ -110,12 +115,25 @@ const loadMode = () => {
     <img class = "card-image" style = "position: absolute; top: -60px; right: 10px;" src="${returnEeveeImage()}"/>
 </div>`;
 
+if(advFeaturesOn){
+tempString += `<div class="evoButtonCard" style = "border: ${checkColorFont(true)};" onClick = "shedButton()">
+    <h2 class="evoButtonFont">Include Shedinja ${returnShedText()}</h2>
+    <img class = "card-image" style = "position: absolute; top: -60px; right: 10px;" src="${returnShedImage()}"/>
+</div>`;
     tempString += `<div class="evoButtonCard" style = "border: ${checkColorFont(true)};" onClick = "toggleBSTMode()">
     <h2 class="evoButtonFont">BST-Weighted ${returnBSTWeightText()}</h2>
 </div></div>`;
+    } else {
+        tempString += `</div>`;
+    }
 
-  tempString += `<h1 style = "margin: auto;"><img class = "card-image" src="${calcLogo}"/></h1>`;
+  tempString += `<h1 style = "margin: auto; z-index: -1;"><img class = "card-image" src="${calcLogo}"/></h1>`;
 
+  tempString += `<div class = "evoBSTContainer" style = "left: 70%;"><div class="evoButtonCard" style = "border: ${checkColorFont(false)}; width: 200px;" onClick = "toggleFeatures()">
+  <h2 class="evoButtonFont" style = "margin-top: 5px; font-size: 16px;">${returnFeaturesText()}</h2>
+</div></div>`;
+
+    if(advFeaturesOn){
   tempString += `<div class = "unownQContainer"><div class="unownQCard" onClick = "explainCalc()" style = "background-color: ${checkColorCombos()};">
   <img class = "card-image" style = "scale: 1.5;" src="${unownQimage}"/>
   </div>`;
@@ -127,6 +145,7 @@ const loadMode = () => {
   tempString += `<div class="unownQCard" onClick = "explainCalc()" style = "left: 40px; background-color: transparent;">
   <img class = "card-image" style = "scale: 1.5;" src="${unownQimage}"/>
   </div></div>`;
+    }
   
    brightmode.innerHTML = tempString;
 }
@@ -144,6 +163,14 @@ const returnBSTWeightText = () => {
         return `(On)`;
     } else {
         return `(Off)`;
+    }
+}
+
+const returnFeaturesText = () => {
+    if(advFeaturesOn){
+        return `Hide Advanced Features`;
+    } else {
+        return `Show Advanced Features`;
     }
 }
 
@@ -189,6 +216,22 @@ const returnEeveeImage = () => {
     }
 }
 
+const returnShedText = () => {
+    if(shedinjaCounted){
+        return `(On)`;
+    } else {
+        return `(Off)`;
+    }
+}
+
+const returnShedImage = () => {
+    if(shedinjaCounted){
+        return pokemonCacheRO[291].image;
+    } else {
+        return ``;
+    }
+}
+
 const changeMode = (bool) => {
 
     lightModeOn = bool;
@@ -202,6 +245,11 @@ const changeMode = (bool) => {
     }
 
     loadMode();
+    reloadCalc();
+}
+
+const toggleFeatures = () => {
+    advFeaturesOn = !advFeaturesOn;
     reloadCalc();
 }
 
@@ -279,7 +327,6 @@ const cacheEvos = () => {
     return fetch(`/pokemoncache.json`)
     .then((response) => {return response.json().then((data) => {return data.evoCache;})});
      
-    console.log(evoCache);
 }
 
 const typeToID = (type) => {
@@ -371,6 +418,11 @@ const reloadCalc = () => {
 
     if(activeState == 2){
         checkCombos();
+        return;
+    }
+
+    if(activeState == 3){
+        sketchPrioCalc();
         return;
     }
 
@@ -585,7 +637,7 @@ const loadSelectedTypes = () => {
     selTypString += `</div><div class="calcCard" onClick="overrideCalc()" style = "background: ${displayCalcColor()}; border: ${checkColorFont(true)};">
     <h2 class="calcFont">Calculate Coverage</h2>
 </div>`;
-
+    if(advFeaturesOn){
     if(isLearningMove){
         if(typeLearning){
             selTypString += `<div class="learningMoveCard active" onClick = "learningMove()" style = "background-color: ${colors[typeCache[typeLearning-1].id-1]};">
@@ -615,6 +667,7 @@ selTypString += `<div class="sketchCard" onClick = "sketchPrioCalc()" style = "b
 <h2 class="sketchFont">Sketch Priority</h2>
 <img class = "topImage" src="${pokemonCacheRO[234].image}"/>
 </div>`;
+    }
 
     selectedtypes.innerHTML = selTypString;
 };
@@ -622,43 +675,343 @@ selTypString += `<div class="sketchCard" onClick = "sketchPrioCalc()" style = "b
 const loadOneType = (i) => {
 
     if(selectedTypes[i] == 0){
-        oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style = "opacity: ${movesLockedOpacity(i)}; border: ${checkColorFont(true)}";>
+        oneTypeCard = `<div class="selectedTypeCard" onclick="typeClicked(${i})" style = "opacity: ${movesLockedOpacity(i)}; border: ${checkColorFont(true)}";>
             <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} Move ${i+1}</h2>
-            <img class = "klefkiImage" style = "scale: .6;" src="${pokemonCache[706].image}"/>
+            <img class = "klefkiImage" style = "scale: .6;" src="${returnKlefki()}"/>
     </div>`
     }else{
-    oneTypeCard = `<div class="selectedTypeCard" onclick="lockMove(${i})" style="background-color: ${colors[selectedTypes[i]-1]}; border: ${checkColorFont(true)};">
+    oneTypeCard = `<div class="selectedTypeCard" onclick="typeClicked(${i})" style="background-color: ${colors[selectedTypes[i]-1]}; border: ${checkColorFont(true)};">
             <h2 class="movesetFont" style = "${checkMarginLocked(i)}">${displayIfLocked(i)} ${typeCache[selectedTypes[i]-1].name}</h2>
-            <img class = "klefkiImage" style = "scale: .6; opacity: ${movesLockedOpacity(i)};" src="${pokemonCache[706].image}"/>
+            <img class = "klefkiImage" style = "scale: .6; opacity: ${movesLockedOpacity(i)};" src="${returnKlefki()}"/>
     </div>`
     }
 
     return oneTypeCard;
 };
 
+const returnKlefki = () => {
+    if(advFeaturesOn){
+        return pokemonCache[706].image;
+    } else {
+        return ``;
+    }
+}
+
+const typeClicked = (num) => {
+    if(advFeaturesOn){
+        lockMove(num);
+        return;
+    } else {
+        selectedTypes[num] = 0;
+        reloadCalc();
+        return;
+    }
+}
+
 const sketchPrioCalc = () => {
 
     if(faqModeOn){
         results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>
         Will calculate the top 5 types to add to your moveset with Sketch, along with which type they should replace.
+        Note that this may take a few seconds to load, especially for later gens.
+        <br><br>
+
+        You may click the buttons on the left to update your moveset, or click the buttons in the middle to view
+        specific mons.
 
         <br><br>
 
-        This feature is not currently available, but will be coming soon!
+        If there are not 5 sketch options with better coverage than the current moveset, the current coverage
+        will also be displayed.
         
         </h2></div>`;
         return;
     }
 
-    results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>
-        Will calculate the top 5 types to add to your moveset with Sketch, along with which type they should replace.
+    checkingOptions = true;
+    activeState = 3;
 
-        <br><br>
+    for(let i = 0; i < 4; i++){
+        if(selectedTypes[i] == 0 && !movesLocked[i]){
+            noOpenSlot = false;
+            checkBestAdd(i);
+            return;
+        }
+    }
 
-        This feature is not currently available, but will be coming soon!
+    noOpenSlot = true;
+
+    bigSketchArray = [];
+
+    bigNumSketchArray = [];
+
+    for(let i = 0; i < 4; i++){
+        if(!movesLocked[i]){
+            tempArray = checkBestAdd(i);
+            bigSketchArray[bigSketchArray.length] = tempArray[0];
+            bigNumSketchArray[bigNumSketchArray.length] = tempArray[1];
+        }
+    }
+
+    tempCoverage = runCalc();
+
+    bigSketchArray = bigSketchArray.flat(1);
+    bigNumSketchArray = bigNumSketchArray.flat(1);
+
+    bigSketchArray[bigSketchArray.length] = tempCoverage[0];
+    bigSketchArray[bigSketchArray.length-1].name = `current`;
+    bigNumSketchArray[bigNumSketchArray.length] = tempCoverage[1];
+
+    bigSketchArray.sort(function(a,b){
         
-        </h2></div>`;
-        return;
+        for(let i = 0; i < 5; i++){  
+        if(bigNumSketchArray[bigSketchArray.indexOf(a)][i]-bigNumSketchArray[bigSketchArray.indexOf(b)][i] != 0){
+            return bigNumSketchArray[bigSketchArray.indexOf(a)][i]-bigNumSketchArray[bigSketchArray.indexOf(b)][i];
+        }
+    }
+    console.log("error?");
+    return a-b;
+    });
+
+    bigNumSketchArray.sort(function(a,b){
+        for(let i = 0; i < 5; i++){  
+        if(a[i]-b[i] != 0){
+            return a[i]-b[i];
+        }
+    }
+    
+    console.log("error?");
+    return a-b;
+    });
+
+    bigSketchArray.length = 5;
+    bigNumSketchArray.length = 5;
+
+    console.log(bigSketchArray);
+
+    for(let i = 0; i < bigSketchArray.length; i++){
+        if(bigSketchArray[i].name == `current`){
+            bigSketchArray.length = i+1;
+            bigNumSketchArray.length = i+1;
+        }
+    }
+
+    loadSketchPrio(bigSketchArray, bigNumSketchArray);
+
+}
+
+const loadSketchPrio = (sketchArray, sketchNumArray) => {
+
+    console.log(sketchArray);
+
+    results.innerHTML = ``;
+
+    tempStringArray = [];
+
+    for(let i = 0; i < 6; i++){
+        tempStringArray[i] = [];
+        for(let j = 0; j < 8; j++){
+            tempStringArray[i][j] = "";
+        }
+    }
+
+    for(let i = 0; i < sketchArray.length; i++){
+        if(sketchArray[i].name == `current`){
+            tempStringArray[i][0] = `<div class = "comboRowContainer"><li class="comboResultsCard" style="border: ${checkColorFont(false)}; width: 250px;">
+            <h2 class="resultsFont" style = "margin-left: 0.1em;">Current Coverage: ` + `&emsp;&emsp;`; 
+        } else {
+        tempStringArray[i][0] = `<div class = "comboRowContainer"><li class="comboResultsCard" onClick = "sketchMove(${sketchArray[i].id}, ${typeToID(sketchArray[i].drop)})" style="background: ${checkMixTypes(sketchArray[i].id, sketchArray[i].drop, 1)}; border: ${checkColorFont(false)}; width: 250px;">
+        <h2 class="resultsFont" style = "margin-left: 0.1em;">${(sketchArray[i].name).toUpperCase()} over ${(sketchArray[i].drop).toUpperCase()}` + `&emsp;&emsp;`;
+        }
+        tempStringArray[i][7] = `<div id="wrapper><div class="numResultsBlankCard"><h2>${showCombos(i)}</h2></div></div>`;
+    
+        for(let j = 1; j < 7; j++){
+            tempStringArray[i][j] += `<li class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background: ${checkMixTypes(sketchArray[i].id, sketchArray[i].drop, sketchNumArray[i][j-1])};">
+        <h2 class="resultsFont">`;
+            tempStringArray[i][j] += `${insertText(j-1)}${sketchNumArray[i][j-1]}` + `&emsp;&emsp;`;
+            tempStringArray[i][j] += `</h2></li>`;
+        }
+    
+        tempStringArray[i][0] += `</h2></li>`;
+    
+        tempStringArray[i][6] += `</div>`;
+    
+        }
+    
+        tempBSTArrays = sketchNumArray;
+    
+        comboArrays = sketchArray;
+    
+        for(let i = 0; i < sketchArray.length; i++){
+            results.innerHTML += tempStringArray[i].join(` `) + `\n`;
+        }
+
+}
+
+const checkMixTypes = (id, typeName, num) => {
+    if(num != 0){
+        return `linear-gradient(to bottom, ${colors[id-1]} 75%, ${colors[typeToID(typeName)-1]} 75% 100%)`;
+    } else {
+        return `transparent`;
+    }
+}
+
+const checkTypeUsable = (num) => {
+
+    trueGen = findTrueGen(activeGen);
+
+    for(let i = 0; i < 4; i++){
+        if((num+1) == selTypesRO[i]){
+            console.log(i);
+            return false;
+        }
+    }
+
+    if(trueGen == 0 && num > 16){
+        return false;
+    }
+
+    if(trueGen == 0 && num == 8){
+        return false;
+    }
+
+    if(trueGen < 5 && num == 17){
+        return false;
+    }
+
+    console.log(num);
+
+    return true;
+}
+
+const checkBestAdd = (num) => {
+
+    selTypesRO = [...selectedTypes];
+
+    sketchArray = [];
+    sketchNumArray = [];
+
+    for(let i = 0; i < 18; i++){
+        if(checkTypeUsable(i)){
+        selectedTypes[num] = typeCache[i].id;
+        tempArray = runCalc();
+        sketchArray[i] = tempArray[0];
+        sketchArray[i].id = typeCache[i].id;
+        sketchArray[i].name = typeCache[i].name;
+        if(noOpenSlot){
+        sketchArray[i].drop = typeCache[selTypesRO[num]-1].name;
+        }
+        sketchNumArray[i] = tempArray[1];
+        }
+    }
+
+    sketchArray = sketchArray.filter(function (el) {
+        return el != null;
+      });
+
+    sketchNumArray = sketchNumArray.filter(function (el) {
+        return el != null;
+      });
+
+    if(bstWeightedOn){
+        for(let i = 0; i < sketchNumArray.length; i++){
+            for(let j = 0; j < 6; j++){
+                sketchNumArray[i][j] = Number(sketchNumArray[i][j]).toFixed(2);
+            }
+        }
+    }
+
+    sketchArray.sort(function(a,b){
+        
+        for(let i = 0; i < 5; i++){  
+        if(sketchNumArray[sketchArray.indexOf(a)][i]-sketchNumArray[sketchArray.indexOf(b)][i] != 0){
+            return sketchNumArray[sketchArray.indexOf(a)][i]-sketchNumArray[sketchArray.indexOf(b)][i];
+        }
+    }
+    console.log("error?");
+    return a-b;
+    });
+
+    sketchNumArray.sort(function(a,b){
+        for(let i = 0; i < 5; i++){  
+        if(a[i]-b[i] != 0){
+            return a[i]-b[i];
+        }
+    }
+    
+    console.log("error?");
+    return a-b;
+    });
+
+    sketchArray.length = 5;
+
+    sketchNumArray.length = 5;
+
+    if(noOpenSlot){
+        selectedTypes = [...selTypesRO];
+        return [sketchArray, sketchNumArray];
+    }
+
+    comboArrays = sketchArray;
+    tempBSTArrays = sketchNumArray;
+
+    loadBestAdd(sketchArray, sketchNumArray);
+}
+
+const loadBestAdd = (sketchArray, sketchNumArray) => {
+
+    tempStringArray = [];
+
+    results.innerHTML = ``;
+
+    for(let i = 0; i < 6; i++){
+        tempStringArray[i] = [];
+        for(let j = 0; j < 8; j++){
+            tempStringArray[i][j] = "";
+        }
+    }
+
+    for(let i = 0; i < 5; i++){
+    tempStringArray[i][0] = `<div class = "comboRowContainer"><li class="comboResultsCard" onclick = "sketchMove(${sketchArray[i].id}, 0)" style="background-color: ${colors[sketchArray[i].id-1]}; border: ${checkColorFont(false)};">
+    <h2 class="resultsFont" style = "margin-left: 0.1em;">Sketch ${(sketchArray[i].name).toUpperCase()}:` + `&emsp;&emsp;`;
+
+    tempStringArray[i][7] = `<div id="wrapper><div class="numResultsBlankCard"><h2>${showCombos(i)}</h2></div></div>`;
+
+    for(let j = 1; j < 7; j++){
+        tempStringArray[i][j] += `<li class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(sketchArray[i].id-1, sketchNumArray[i][j-1])};">
+    <h2 class="resultsFont">`;
+        tempStringArray[i][j] += `${insertText(j-1)}${sketchNumArray[i][j-1]}` + `&emsp;&emsp;`;
+        tempStringArray[i][j] += `</h2></li>`;
+    }
+
+    tempStringArray[i][0] += `</h2></li>`;
+
+    tempStringArray[i][6] += `</div>`;
+
+    }
+
+    tempBSTArrays = sketchNumArray;
+
+    for(let i = 0; i < 5; i++){
+        results.innerHTML += tempStringArray[i].join(` `) + `\n`;
+    }
+
+    selectedTypes = [...selTypesRO];
+
+}
+
+const sketchMove = (type, drop) => {
+
+        for(let i = 0; i < 4; i++){
+            if(selectedTypes[i] == drop && !movesLocked[i]){
+                console.log("test");
+                selectedTypes[i] = type;
+                results.innerHTML = ``;
+                activeState = 0;
+                loadSelectedTypes();
+                return;
+            }
+        }
 }
 
 const explainCalc = () => {
@@ -700,7 +1053,23 @@ const evoButton = () => {
     }
 
     fullEvolvedOnly = !fullEvolvedOnly;
-    loadSelectedTypes();
+    reloadCalc();
+}
+
+const shedButton = () => {
+
+    if(faqModeOn){
+        results.innerHTML = `<div class = explainCard><h2 class = explainCardFont>
+        When toggled off, Shedinja will not be included in calculations. <br>
+        <br>
+        Since the sorting order tries to minimize immunities first, and Shedinja is immune to many movesets,
+        including Shedinja may be misleading in later generations where it's unlikely to show up, or in seeds where
+        it's not a threat.
+        </h2></div>`;
+        return;
+    }
+
+    shedinjaCounted = !shedinjaCounted;
     reloadCalc();
 }
 
@@ -731,7 +1100,6 @@ const toggleBSTMode = () => {
     }
 
     bstWeightedOn = !bstWeightedOn;
-    loadSelectedTypes();
     reloadCalc();
 }
 
@@ -896,17 +1264,25 @@ const loadCombos = () => {
         }
     }
 
+    tempMod = 0;
+
+    for(let i = 0; i < 4; i++){
+        if(selectedTypes[i] == 0 && !movesLocked[i]){
+            tempMod = 1;
+        }
+    }
+
     for(let i = 0; i < comboArrays.length; i++){
 
-        for(let j = 1; j < 7; j++){           
+    for(let j = 1; j < 7; j++){           
         
-        tempStringArray[i][7] = `<div id="wrapper><div class="numResultsBlankCard"><h2>${showCombos(i)}</h2></div></div>`;
+    tempStringArray[i][7] = `<div id="wrapper><div class="numResultsBlankCard"><h2>${showCombos(i)}</h2></div></div>`;
 
     if(i < (comboArrays.length - 1 - tempMod)){
     tempStringArray[i][0] = `<div class = "comboRowContainer"><li class="comboResultsCard" onClick = "updateMoveset(${selectedTypes[i]})" style="background-color: ${colors[typeCache[selectedTypes[i]-1].id-1]}; border: ${checkColorFont(false)};">
     <h2 class="resultsFont">Drop ${(typeCache[selectedTypes[i]-1].name).toUpperCase()}:` + `&emsp;&emsp;`;
     
-    tempStringArray[i][j] += `<li class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup((typeCache[selectedTypes[i]-1].id-1), i, j-1)};">
+    tempStringArray[i][j] += `<li class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup((typeCache[selectedTypes[i]-1].id-1), tempBSTArrays[i][j-1])};">
     <h2 class="resultsFont">`;
         tempStringArray[i][j] += `${insertText(j-1)}${tempBSTArrays[i][j-1]}` + `&emsp;&emsp;`;
     } 
@@ -915,17 +1291,17 @@ const loadCombos = () => {
         tempStringArray[i][0] = `<div class = "comboRowContainer"><li class="comboResultsCard" onClick = "updateMoveset(${0})" style="background-color: ${colors[typeCache[typeLearning-1].id-1]}; border: ${checkColorFont(false)};">
         <h2 class="resultsFont">Add ${(typeCache[typeLearning-1].name).toUpperCase()}:` + `&emsp;&emsp;`;
 
-        tempStringArray[i][j] += `<li class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(typeCache[typeLearning-1].id-1, i, j-1)};">
+        tempStringArray[i][j] += `<li class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(typeCache[typeLearning-1].id-1, tempBSTArrays[i][j-1])};">
         <h2 class="resultsFont">`;
             tempStringArray[i][j] += `${insertText(j-1)}${tempBSTArrays[i][j-1]}` + `&emsp;&emsp;`;
     
     }
 
     if(i == (comboArrays.length-1)){
-        tempStringArray[i][0] = `<div class = "comboRowContainer"><li class="comboResultsCard" onClick = "updateMoveset(${-1})" style = "border: ${checkColorFont(false)};">
+        tempStringArray[i][0] = `<div class = "comboRowContainer"><li class="comboResultsCard" onClick = "updateMoveset(${-1})" style = "background-color: gray; border: ${checkColorFont(false)};">
         <h2 class="resultsFont">Current Moves:` + `&emsp;&emsp;`;
 
-        tempStringArray[i][j] += `<li class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(-1, i, j-1)};">
+        tempStringArray[i][j] += `<li class="comboResultsCard" onclick = "displayingCombos(${i},${j-1})" style = "background-color: ${styleCleanup(18, tempBSTArrays[i][j-1])};">
         <h2 class="resultsFont">`;
             tempStringArray[i][j] += `${insertText(j-1)}${tempBSTArrays[i][j-1]}` + `&emsp;&emsp;`;
     }
@@ -940,7 +1316,6 @@ const loadCombos = () => {
     }
 
     tempStringArray.sort(function(a,b){
-        
         for(let i = 0; i < 5; i++){  
         if(tempBSTArrays[tempStringArray.indexOf(a)][i]-tempBSTArrays[tempStringArray.indexOf(b)][i] != 0){
             return tempBSTArrays[tempStringArray.indexOf(a)][i]-tempBSTArrays[tempStringArray.indexOf(b)][i];
@@ -960,28 +1335,12 @@ const loadCombos = () => {
     selectedTypes = [...storeSelTypes];
 }
 
-const styleCleanup = (num, i, j) => {
+const styleCleanup = (color, num) => {
 
-    if(num == -2){
-        if(tempArray1[i] == 0){
-            return `${checkColorCombos()}`;
-        } else {
-            return `#8F867B`;
-        }
-    }
-
-    if(num == -1){
-        if(tempBSTArrays[i][j] == 0){
-            return `${checkColorCombos()}`;
-        } else {
-            return `#8F867B`;
-        }
-    }
-
-    if(tempBSTArrays[i][j] == 0){
-        return `${checkColorCombos()}`;
+    if(num == 0){
+        return `transparent`;
     } else{
-        return colors[num];
+        return colors[color];
     }
 }
 
@@ -989,7 +1348,16 @@ const displayingCombos = (row, col) => {
 
     displayingCombosArray[row][col] = !displayingCombosArray[row][col];
 
+    if(activeState == 3 && noOpenSlot){
+    loadSketchPrio(bigSketchArray, bigNumSketchArray);
+    return;
+    } else if (activeState == 3 && !noOpenSlot){
+    loadBestAdd(comboArrays, tempBSTArrays);
+    return;
+    } else {
     loadCombos();
+    return;
+    }
 }
 
 const showCombos = (row) => {
@@ -1080,7 +1448,7 @@ const lockMove = (i) => {
         <br>
         For example, if you have Earthquake on a Ground type physical attacker, you would never consider dropping it. This allows you to ignore that option when learning a new move. <br>
         <br>
-        Note that if you have a status move you do not wish to drop, you may also lock the empty "N/A" moveslots.
+        Note that if you have a status move you do not wish to drop, you may also lock the empty "Move X" moveslots.
         
         
         </h2></div>`;
@@ -1111,10 +1479,6 @@ const overrideCalc = () => {
 }
 
 const runCalc = () => {
-
-    if(!pokemonCache){
-        console.log("error");
-    }
 
     results.innerHTML = "";
 
@@ -1227,9 +1591,7 @@ const runCalc = () => {
 
     tempCount = 0;
     for(let i = 0; i < 4; i++){
-        if(selectedTypes[i] == 0){
-            tempCount += 1;
-        }
+        tempCount += 1*(selectedTypes[i] == 0);
     }
     if(tempCount == 4){
         return;
@@ -1245,11 +1607,11 @@ const returnNum = (mon) => {
 
     numToUse = 1;
 
-    if(fullEvolvedOnly){
-        numToUse = avgBSTArrayFE[activeGen];
-    } else {
-        numToUse = avgBSTArray[activeGen];
+    if(!shedinjaCounted && mon.name == `shedinja`){
+        return 0;
     }
+
+    numToUse = avgBSTArrayFE[activeGen]*(fullEvolvedOnly) + avgBSTArray[activeGen]*(!fullEvolvedOnly);
 
     tempBST = 0;
 
@@ -1313,11 +1675,11 @@ const displayResults = (array) => {
 
     resultsHTMLString = "";
 
-    resultsHTMLString += `<div class = "comboRowContainer"><li class="comboResultsCard">
+    resultsHTMLString += `<div class = "comboRowContainer"><li class="comboResultsCard" style = "background: ${displayCalcColor()};">
     <h2 class="resultsFont">Coverage:&emsp;&emsp;</h2></li>`;
 
     for(let i = 0; i < 6; i++){
-        resultsHTMLString += `<li class="comboResultsCard" onclick = "toggleDisplay(${i})" style = "background-color: ${styleCleanup(-2, i, 0)};">
+        resultsHTMLString += `<li class="comboResultsCard" onclick = "toggleDisplay(${i})" style = "background-color: ${styleCleanup(18, array[i])}; border: ${checkColorFont(false)}">
         <h2 class="resultsFont">${insertText(i)}${array[i]}&emsp;&emsp;</h2>
     </li>`;
     }

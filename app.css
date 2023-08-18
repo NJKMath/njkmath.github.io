@@ -287,8 +287,8 @@ body {
 .comboResultsCard{
     background-color: rgba(143, 134, 123, .7);
     color: #222;
-    height: calc(5px + 6vh);
-    width: 180px;
+    height: 50px;
+    width: 190px;
     padding: 0px;
     display: inline-block;
     border-radius: 12px;
@@ -321,7 +321,7 @@ body {
 }
 
 .resultsFont{
-    margin-top: 1em;
+    margin-top: 14px;
     margin-left: .5em; 
     font-size: 18px;
     color: white;
@@ -334,6 +334,21 @@ body {
     -0.08em 0.08em black,
     0.08em -0.08em black,
     0.08em 0.08em black;
+}
+
+#brightmode{
+    padding-inline-start: 0;
+    display: flex;
+    position: relative;
+    min-width: 1100px;
+}
+
+#genSelect{
+    padding-inline-start: 0;
+    display: flex;
+    grid-template-columns: repeat(11, 1fr);
+    gap: 5px;
+    flex-wrap: wrap;
 }
 
 #pokecalc{
@@ -355,14 +370,6 @@ body {
     left: 0px;
 }
 
-#genSelect{
-    padding-inline-start: 0;
-    display: flex;
-    grid-template-columns: repeat(11, 1fr);
-    gap: 5px;
-    flex-wrap: wrap;
-}
-
 #results{
     padding-inline-start: 0;
     grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
@@ -370,7 +377,7 @@ body {
 }
 
 .container{
-    padding: 20px;
+    padding: 15px;
 }
 
 .comboRowContainer{
@@ -391,10 +398,10 @@ body {
 
 .evoBSTContainer{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 5px;
     position: absolute;
-    left: 15%;
+    left: 10%;
 }
 
 .unownQContainer{
@@ -422,14 +429,6 @@ h1{
 
 .card-image{
     width: 75%;
-}
-
-#brightmode{
-    padding-inline-start: 0;
-    display: flex;
-    width: 100%;
-    position: relative;
-    min-width: 1100px;
 }
 
 .modeCard{
